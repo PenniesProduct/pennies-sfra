@@ -1,0 +1,5 @@
+<!--- TEMPLATENAME: penniesfooterinclude.isml --->
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('penniesDonationIntegrationEnabled')}">
+	<script type="text/javascript"><isinclude template="resources/apppenniesresources"/></script>
+	<script src="${URLUtils.staticURL('js/libPennies.min.js')}"></script>
+</isif>

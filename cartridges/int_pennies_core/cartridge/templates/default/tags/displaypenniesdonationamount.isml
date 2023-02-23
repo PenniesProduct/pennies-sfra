@@ -1,0 +1,11 @@
+<isscript>
+	var PenniesUtil = require("*/cartridge/scripts/util/PenniesUtil.js");
+	var penniesDonationAmount = PenniesUtil.getPenniesDonationAmount(pdict.p_lineitemctnr);
+</isscript>
+
+<isif condition="${penniesDonationAmount.available}">
+	<tr class="pennies-donation">
+		<td>Pennies Donation</td>
+		<td><isprint value="${penniesDonationAmount}"/></td>
+	</tr>
+</isif>

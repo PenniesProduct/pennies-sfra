@@ -1,0 +1,24 @@
+<!--- TEMPLATENAME: penniesinformpanelbanner.isml --->
+<isinclude template="util/modules"/>
+
+<isscript>
+	var PenniesUtil = require('~/cartridge/scripts/util/PenniesUtil');
+</isscript>
+<div id="penniesMainContainer">
+	<div class="penniesDP"> 
+	        <h1> 
+	            ${Resource.msg('pennies.informpanel.header', 'pennies', null)} 
+	        </h1> 
+	 
+	 		<iscomment>Pennies charity names</iscomment>
+	        <p id="dpContent" > 
+	            ${StringUtils.format(Resource.msg('pennies.informpanel.donateto', 'pennies',null ), PenniesUtil.getCharityNames())}
+	        </p> 
+	 
+	        <iscomment>Pennies charity logo</iscomment>
+	        <isif condition="${!empty(PenniesUtil.getCharityLogoId())}">
+	        	<isset name="charityLogoUrl" value="${'https://s3-eu-west-1.amazonaws.com/penniesfoundation/charities/' + PenniesUtil.getCharityLogoId() + '-75.png'}" scope="page" />
+	        	<img src="${charityLogoUrl}" >
+	        </isif>
+	 </div> 
+</div>

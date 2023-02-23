@@ -1,0 +1,24 @@
+
+	<div id="penniesInvitePanelWrap"> 
+	        <div id="penniesIP" > 
+	            
+	            <iscomment>Pennies donation amount</iscomment>
+        		<div id="ipProposal" class="penniesdonationdisplay"> 
+	                ${Resource.msg('pennies.invitepanel.justpay', 'pennies', null)} <span id="penniesAmount" >${pdict.displayDonationAmount}</span> ${Resource.msg('pennies.invitepanel.tocharity', 'pennies', null)}
+	            </div>  
+	             
+	            <iscomment>Pennies charity logo</iscomment>
+        		<isif condition="${!empty(pdict.CharityLogo)}">
+	         		<isset name="charityLogoUrl" value="${'https://s3-eu-west-1.amazonaws.com/penniesfoundation/charities/' +pdict.CharityLogo+ '-75.png'}" scope="page" />
+	         		<img src="${charityLogoUrl}">
+	         	</isif>
+	         	
+	            <iscomment>Pennies charity names</iscomment>
+        		<div id="ipTerms" > 
+	                ${StringUtils.format(Resource.msg('pennies.invitepanel.charity', 'pennies', null), pdict.CharityName)}
+	            </div> 
+	            
+	            <!--PENNIES: onclick method in the following span should invoke your code that adds the donation. --> 
+	            <span id="penniesInviteBtn" data-inviteurl="${URLUtils.https('Pennies-AddDonation','displayinformbanner','true')}">${Resource.msg('pennies.invitepanel.donatebtn', 'pennies', null)}</span> 
+	  		</div> 
+	  </div>

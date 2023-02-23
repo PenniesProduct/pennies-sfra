@@ -1,0 +1,6 @@
+<!--- TEMPLATENAME: penniesheaderinclude.isml --->
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('penniesDonationIntegrationEnabled')}">
+	<link rel="stylesheet" href="${URLUtils.staticURL('/css/pennies.min.css')}" />
+</isif>
+
+

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <type-extension type-id="Order">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="penniesCharityDetails">
+                <display-name xml:lang="x-default">Pennies Charity Details</display-name>
+                <description xml:lang="x-default">Pennies Charity Details</description>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="penniesDonationStatus">
+                <display-name xml:lang="x-default">Pennies Donation Status</display-name>
+                <description xml:lang="x-default">Pennies Donation Status</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Created</display>
+                        <value>created</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Ready to Export</display>
+                        <value>readytoexport</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Exported</display>
+                        <value>exported</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Not Donated</display>
+                        <value>notdonated</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="penniesHashKey">
+                <display-name xml:lang="x-default">Pennies Hash Key</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="penniesPostDate">
+                <display-name xml:lang="x-default">Pennies Post Date</display-name>
+                <description xml:lang="x-default">Pennies Post Date</description>
+                <type>datetime</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="pennies">
+                <display-name xml:lang="x-default">Pennies</display-name>
+                <attribute attribute-id="penniesCharityDetails"/>
+                <attribute attribute-id="penniesHashKey"/>
+                <attribute attribute-id="penniesDonationStatus"/>
+                <attribute attribute-id="penniesPostDate"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+</metadata>

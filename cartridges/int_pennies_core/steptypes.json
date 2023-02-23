@@ -1,0 +1,95 @@
+{
+    "step-types": {
+        "script-module-step" : [
+			{
+				"@type-id":"custom.PostPenniesDonation",
+				"@supports-parallel-execution":"true",
+				"@supports-site-context":"true",
+				"@supports-organization-context":"false",
+				"description":"Post Pennies Donation",
+				"module":"int_pennies_core/cartridge/scripts/job/PenniesJobAdapter.js",
+				"function":"postPenniesDonation",
+				"transactional":"false",
+				"timeout-in-seconds":"900",
+				"status-codes": {
+					"status": 
+					[
+						{
+							"@code": "ERROR",
+							"description": "Used when the step failed with an error."
+						},
+						{
+							"@code": "FINISHED",
+							"description": "Used when the step finished successfully."
+						},
+						{
+							"@code": "FINISHED_WITH_WARNINGS",
+							"description": "Used when the step finished with warnings."
+						}
+					]
+				}
+			},
+			{
+				"@type-id":"custom.GeneratePenniesDonationReport",
+				"@supports-parallel-execution":"true",
+				"@supports-site-context":"true",
+				"@supports-organization-context":"false",
+				"description":"Generate Pennies Donation Report",
+				"module":"int_pennies_core/cartridge/scripts/job/PenniesJobAdapter.js",
+				"function":"generatePenniesDonationReport",
+				"transactional":"false",
+				"timeout-in-seconds":"900",
+				"parameters": { 
+					"parameters": [
+						{
+							"@name": "FileNamePrefix",
+							"description": "Report file name prefix",
+							"@type": "string",
+							"@required": true,
+							"@trim" : true
+						},
+						{
+							"@name": "IMPEXFolderPath",
+							"description": "Report folder path(relative to IMPEX)",
+							"@type": "string",
+							"@required": true,
+							"@trim": true
+						},
+						{
+							"@name": "ReportStartDate",
+							"description": "Report Start Date",
+							"@type": "date-string",
+							"@required": false
+						},
+						{
+							"@name": "ReportEndDate",
+							"description": "Report End Date",
+							"@type": "date-string",
+							"@required": false
+						}
+					]
+				},
+				"status-codes": {
+					"status": [
+						{
+							"@code": "ERROR",
+							"description": "Used when the step failed with an error."
+						},
+						{
+							"@code": "FINISHED",
+							"description": "Used when the step finished successfully."
+						},
+						{
+							"@code": "FINISHED_WITH_WARNINGS",
+							"description": "Used when the step finished with warnings."
+						},
+						{
+							"@code": "NO_ORDERS_FOUND",
+							"description": "Used when the step did not find any orders to generate a report for based on the search criteria."
+						}
+					]
+				}
+			}
+		]
+    }
+}

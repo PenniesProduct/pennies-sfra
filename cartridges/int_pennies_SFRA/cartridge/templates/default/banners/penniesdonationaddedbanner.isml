@@ -1,0 +1,24 @@
+
+	<div id="penniesInvitePanelWrap"> 
+		<div id="penniesIP"> 
+		    
+		    <iscomment>Pennies donation amount added to basket</iscomment>
+	       	<div id="ipConfirmation" class="penniesdonationdisplay"> 
+	       	    ${Resource.msg('pennies.thankyoupanel.thankyou', 'pennies', null)}<br/>${Resource.msg('pennies.thankyoupanel.yourorderincludesa', 'pennies', null)}  
+	       	    <span id="penniesAmount" >${pdict.donationDisplayAmount}</span> ${Resource.msg('pennies.thankyoupanel.charitydonation', 'pennies', null)}
+		    </div> 
+		    
+		   	<iscomment>Pennies charity logo</iscomment>
+		   	<isif condition="${!empty(pdict.CharityLogo)}">
+	        		<isset name="charityLogoUrl" value="${'https://s3-eu-west-1.amazonaws.com/penniesfoundation/charities/' + pdict.CharityLogo + '-75.png'}" scope="page" />
+	        		<img src="${charityLogoUrl}" >
+	        	</isif>
+	       	
+		    <span id="penniesRemoveBtn" data-removeurl="${URLUtils.https('Pennies-RemoveDonation','displayinformbanner','true')}">${Resource.msg('pennies.invitepanel.removebtn', 'pennies', null)} </span> 
+		
+		    <iscomment>Pennies charity names</iscomment>
+	       	<div id="ipTerms" > ${StringUtils.format(Resource.msg('pennies.invitepanel.charity', 'pennies', null), pdict.CharityName)}</div> 
+		</div> 
+	</div> 
+
+        

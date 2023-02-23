@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns="http://www.demandware.com/xml/impex/services/2014-09-26">
+    
+	<service-credential service-credential-id="pennies.http.credentials">
+        <url>https://testapi.pennies.org.uk/v1.1/donation</url>
+        <user-id></user-id>
+        <password></password>
+    </service-credential>
+
+    <service-profile service-profile-id="pennies.http.profile">
+        <timeout-millis>10000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service service-id="pennies.calculation.http.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix>penniescalculation</log-prefix>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>pennies.http.profile</profile-id>
+        <credential-id>pennies.http.credentials</credential-id>
+    </service>
+
+    <service service-id="pennies.donation.http.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix>penniesdonation</log-prefix>
+        <comm-log-enabled>true</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>pennies.http.profile</profile-id>
+        <credential-id>pennies.http.credentials</credential-id>
+    </service>
+
+</services>

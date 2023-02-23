@@ -1,0 +1,9 @@
+<!--- TEMPLATENAME: penniesdonationbanner.isml --->
+
+
+ <isif condition="${ dw.system.Site.getCurrent().getCustomPreferenceValue('penniesDonationIntegrationEnabled') && pdict.CurrentSession.currency.currencyCode == 'GBP' }" >
+ 	
+ 	<iscomponent pipeline="Pennies-DisplayBanner" displayinformbanner="${'p_display_inform_banner' in pdict ? pdict.p_display_inform_banner : 'false'}"/>
+ 	
+ </isif>
+ 	 

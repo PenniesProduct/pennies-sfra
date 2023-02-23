@@ -1,0 +1,33 @@
+<!--- TEMPLATENAME: penniesinvitetodonate.isml --->
+<isinclude template="util/modules"/>
+
+<isscript>
+	var PenniesUtil = require('~/cartridge/scripts/util/PenniesUtil');
+	var displayDonationAmount = PenniesUtil.getDonationDisplayAmount(session.privacy.penniesDonationAmount);
+</isscript>
+
+<div id="penniesMainContainer">
+	<div id="penniesInvitePanelWrap"> 
+	        <div id="penniesIP" > 
+	            
+	            <iscomment>Pennies donation amount</iscomment>
+        		<div id="ipProposal" class="penniesdonationdisplay">
+	            	${Resource.msg('pennies.invitepanel.justpay', 'pennies', null)} <span id="penniesAmount" >${displayDonationAmount}</span> ${Resource.msg('pennies.invitepanel.tocharity', 'pennies', null)}
+	            </div>  
+	             
+	            <iscomment>Pennies charity logo</iscomment>
+        		<isif condition="${!empty(PenniesUtil.getCharityLogoId())}">
+	         		<isset name="charityLogoUrl" value="${'https://s3-eu-west-1.amazonaws.com/penniesfoundation/charities/' + PenniesUtil.getCharityLogoId() + '-75.png'}" scope="page" />
+	         		<img src="${charityLogoUrl}">
+	         	</isif>
+	         	
+	            <iscomment>Pennies charity names</iscomment>
+        		<div id="ipTerms" > 
+	                ${StringUtils.format(Resource.msg('pennies.invitepanel.charity', 'pennies', null), PenniesUtil.getCharityNames())}
+	            </div> 
+	            
+	            <!--PENNIES: onclick method in the following span should invoke your code that adds the donation. --> 
+	            <span id="penniesInviteBtn">${Resource.msg('pennies.invitepanel.donatebtn', 'pennies', null)}</span> 
+	  		</div> 
+	  </div>
+  </div>

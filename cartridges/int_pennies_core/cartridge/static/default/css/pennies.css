@@ -1,0 +1,141 @@
+.penniesDP {
+	height: 19.500em;
+    width: 9.875em;
+    border: 1px solid rgb(222, 222, 222);
+    line-height: 1.375em;
+    overflow: hidden;
+    background-color: rgb(255, 255, 255);
+    background-image: url(https://s3-eu-west-1.amazonaws.com/penniesfoundation/logos-v2/finger-light75.gif);
+    font-family: arial;
+    position: relative;
+    background-position: 5em 0;
+    background-repeat: no-repeat;
+}
+
+.penniesDP h1{
+	display: block;
+    position: absolute;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    color: rgb(122, 184, 66);
+    font-size: 1.125em;
+    width: 5.3em;
+    height: 6em;
+    top: 0.375em;
+    left: .5em;
+    font-family: arial;
+    line-height: 1.05em;
+}
+
+.penniesDP p#dpContent{
+	display: block;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    color: rgb(133, 133, 133);
+    font-size: 0.750em;
+    width: 12.5em;
+    height: 6.5em;
+    top: 18.5em;
+    left: .25em;
+    text-align: center;
+    font-family: arial;
+    line-height: 1.5em;
+}
+
+.penniesDP img{
+	height: 6.25em;
+    width: 6.25em;
+    top: 7em;
+    left: 1.875em;
+    position: absolute;
+}
+
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP {
+	line-height: 1.75em;
+    border: 1px solid rgb(204, 204, 204);
+    width: 23.6em;
+    height: 15em;
+    text-align: left;
+    font-size: 1em;
+    margin: 1em 0px;
+    background-color: rgb(255, 255, 255);
+    position: relative;
+    font-family: arial;
+}
+
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP div.penniesdonationdisplay{
+	text-indent: .75em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    color: rgb(122, 184, 66);
+    background-image: url(https://s3-eu-west-1.amazonaws.com/penniesfoundation/logos-v2/finger-invite-onestepcheckout.gif);
+    background-position: 0 .625em;
+    background-repeat: no-repeat no-repeat;
+}
+
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP #ipProposal{
+	font-size: 1.5em;
+    padding: 4.3em 2em 0;
+}
+
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP #ipConfirmation{
+	font-size: 1.5em;
+    padding: 4.3em 2em 0;
+    border-color: rgb(122, 184, 66);
+}
+
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP img{
+	display: block;
+    position: absolute;
+    top: .35em;
+    right: .35em;
+}
+
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP #ipTerms{
+	min-height: 1.875em;
+    bottom: 0;
+    position: absolute;
+    display: block;
+    padding: .6em .625em .6em 7.5em;
+    font-size: 0.67em;
+    line-height: 1.2em;
+    clear: both;
+    color: rgb(102, 102, 102);
+    background-image: url(https://s3-eu-west-1.amazonaws.com/penniesfoundation/charities/20000011-50.jpg);
+    background-position: .6em -1em;
+    background-repeat: no-repeat no-repeat;
+}
+
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP span#penniesInviteBtn,
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP span#penniesRemoveBtn{
+	text-align: center;
+    box-shadow: rgb(153, 153, 153) 0.1em 0.1em 0.1em;
+    font-weight: bold;
+    font-size: 1.5em;
+    position: absolute;
+    top: .75em;
+    left: 4.2em;
+    line-height: 2.1em;
+    width: 5.1em;
+    padding: .13em .36em;
+    color: white;
+    cursor: pointer;
+    border: 1px solid rgb(100, 152, 55);
+    border-radius: .65em;
+    background-image: linear-gradient(rgb(179, 243, 129) 0%, rgb(130, 195, 76) 20%, rgb(130, 195, 76) 85%, rgb(114, 170, 73) 100%);
+    background-position: initial initial;
+    background-repeat: initial initial;
+}
+
+
+
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP span#penniesAmount{
+	font-weight: bold;
+    color: rgb(91, 40, 77);
+}
+
+

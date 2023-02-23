@@ -1,0 +1,11 @@
+<!--- TEMPLATENAME: displayOriginalShippingPrice.isml --->
+<isscript>
+	var PenniesUtil = require("*/cartridge/scripts/util/PenniesUtil.js");
+	var shippingPriceExclDonation = PenniesUtil.getShippingPriceExcludingDonation(pdict.p_lineitemctnr);
+</isscript>
+
+<isif condition="${shippingPriceExclDonation.available}">
+	<isprint value="${shippingPriceExclDonation}"/>
+<iselse/>
+	${Resource.msg('global.symbol.dash','locale',null)}
+</isif>

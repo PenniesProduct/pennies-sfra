@@ -1,0 +1,32 @@
+<!--- TEMPLATENAME: penniesdonationadded.isml --->
+<isinclude template="util/modules"/>
+
+<isscript>
+	var PenniesUtil = require('~/cartridge/scripts/util/PenniesUtil');
+	var donationAmount = PenniesUtil.getPenniesDonationAmount(pdict.basket);
+	var donationDisplayAmount = PenniesUtil.getDonationDisplayAmount(donationAmount.value);
+</isscript>
+
+<div id="penniesMainContainer">
+	<div id="penniesInvitePanelWrap"> 
+		<div id="penniesIP"> 
+		    
+		    <iscomment>Pennies donation amount added to basket</iscomment>
+        	<div id="ipConfirmation" class="penniesdonationdisplay">
+        	    ${Resource.msg('pennies.thankyoupanel.thankyou', 'pennies', null)}<br/>${Resource.msg('pennies.thankyoupanel.yourorderincludesa', 'pennies', null)}  
+	       	    <span id="penniesAmount" >${donationDisplayAmount}</span> ${Resource.msg('pennies.thankyoupanel.charitydonation', 'pennies', null)}
+		    </div> 
+		    
+		   	<iscomment>Pennies charity logo</iscomment>
+		   	<isif condition="${!empty(PenniesUtil.getCharityLogoId())}">
+         		<isset name="charityLogoUrl" value="${'https://s3-eu-west-1.amazonaws.com/penniesfoundation/charities/' + PenniesUtil.getCharityLogoId() + '-75.png'}" scope="page" />
+         		<img src="${charityLogoUrl}" >
+         	</isif>
+        	
+		    <span id="penniesRemoveBtn">${Resource.msg('pennies.invitepanel.removebtn', 'pennies', null)} </span> 
+		
+		    <iscomment>Pennies charity names</iscomment>
+        	<div id="ipTerms" > ${StringUtils.format(Resource.msg('pennies.invitepanel.charity', 'pennies', null), PenniesUtil.getCharityNames())}</div> 
+		</div> 
+	</div> 
+</div>          

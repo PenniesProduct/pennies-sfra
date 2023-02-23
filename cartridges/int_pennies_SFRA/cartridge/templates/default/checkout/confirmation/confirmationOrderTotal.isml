@@ -1,0 +1,45 @@
+<strong>${Resource.msg('label.order.totals', 'confirmation', null)}:</strong> <br/>
+<!--- Subtotal --->
+${Resource.msg('label.order.subtotal','confirmation', null)}:
+${pdict.order.totals.subTotal}
+<br/>
+
+<isif condition="${pdict.order.totals.orderLevelDiscountTotal.value !== 0}">
+    ${Resource.msg('label.order.discount', 'common', null)}:
+    - ${pdict.order.totals.orderLevelDiscountTotal.formatted}
+   <br/>
+</isif>
+
+<iscomment>Start Pennies donation Changes</iscomment>
+${Resource.msg('label.order.shipping.cost','confirmation', null)}:
+
+<isif condition="${pdict.penniesDonation.donationAmount.value !== 0}">
+	${pdict.penniesDonation.shippingPriceExclDonationAmount}
+<iselse>
+	${pdict.order.totals.totalShippingCost}
+</isif>
+<iscomment>End Pennies donation Changes</iscomment>
+<br/>
+
+<isif condition="${pdict.order.totals.shippingLevelDiscountTotal.value !== 0}">
+    ${Resource.msg('label.shipping.discount', 'common', null)}:
+    - ${pdict.order.totals.shippingLevelDiscountTotal.formatted}
+    <br/>
+</isif>
+
+<iscomment>Start Pennies donation Changes</iscomment>
+<isif condition="${pdict.penniesDonation.donationAmount !== 0}">
+    Pennies Donation:
+     ${pdict.penniesDonation.donationDisplayAmount}
+    <br/>
+</isif>
+<iscomment>End Pennies donation Changes</iscomment>
+
+<!--- Sales Tax --->
+${Resource.msg('label.order.sales.tax','confirmation', null)}:
+${pdict.order.totals.totalTax}
+<br/>
+
+<!--- Grand Total --->
+${Resource.msg('label.order.grand.total','confirmation', null)}:
+${pdict.order.totals.grandTotal}

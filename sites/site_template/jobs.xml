@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs xmlns="http://www.demandware.com/xml/impex/jobs/2015-07-01">
+    <job job-id="Pennies - Generate Donation Report" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="Generate Pennies Donation Report" type="custom.GeneratePenniesDonationReport" enforce-restart="false">
+                <description>This step generates the pennies donation report</description>
+                <parameters>
+                    <parameter name="FileNamePrefix">PenniesDonationReport</parameter>
+                    <parameter name="IMPEXFolderPath">src/pennies</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-once enabled="false">
+                <date>2017-09-08Z</date>
+                <time>09:34:57.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
+
+    <job job-id="Pennies - Post Donation" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="Post Pennies Donation" type="custom.PostPenniesDonation" enforce-restart="false">
+                <description>This step exports the pennies donation details to pennies via api calls</description>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-once enabled="false">
+                <date>2017-09-11Z</date>
+                <time>11:46:42.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
+</jobs>
