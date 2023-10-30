@@ -7,9 +7,54 @@
  */
 
 var LocalServiceRegistry = require( 'dw/svc/LocalServiceRegistry');
+var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var Site = require( 'dw/system/Site' );
 var Logger = require('dw/system/Logger').getLogger('pennies.api');
 
+function getAccountDetails() {
+	var accessToken : String = Site.getCurrent().getPreferences().getCustom()["penniesAccessToken"];
+	var merchantID : String = Site.getCurrent().getPreferences().getCustom()["penniesMerchantID"];
+	var pref : String = Site.getCurrent().getPreferences().getCustom()
+	var testAccount = pref["penniesTestAccount"].getValue();
+
+	// Return test account or live details
+	if(testAccount) {
+		switch (testAccount) {
+			case 'TEST1':
+				return {
+					penniesMerchantID: '999010',
+					penniesAccessToken: 'C47t1',
+				}
+			case 'TEST2':
+				return {
+					penniesMerchantID: '999020',
+					penniesAccessToken: 'C47t2',
+				}
+			case 'TEST3':
+				return {
+					penniesMerchantID: '999030',
+					penniesAccessToken: 'C47t3',
+				}
+			case 'TEST4':
+				return {
+					penniesMerchantID: '999040',
+					penniesAccessToken: 'C47t4',
+				}
+			default:
+				return {
+					penniesMerchantID: merchantID,
+					penniesAccessToken: accessToken,
+				}
+		}
+	} else {
+
+		return {
+			penniesMerchantID: merchantID,
+			penniesAccessToken: accessToken,
+		}
+	}
+
+}
 /**
  * This function makes the API call to Pennies using the basket total.
  * 
@@ -17,10 +62,12 @@ var Logger = require('dw/system/Logger').getLogger('pennies.api');
  * 
  */
 function calculateDonation(basket) {
-	
+
+	logView();
 	var responseObj : JSON ;
-	var accessToken : String = Site.getCurrent().getPreferences().getCustom()["penniesAccessToken"];
-	var merchantID : String = Site.getCurrent().getPreferences().getCustom()["penniesMerchantID"];
+	var accountDetails = getAccountDetails();
+	var accessToken : String = accountDetails.penniesAccessToken;
+	var merchantID : String = accountDetails.penniesMerchantID;
 
 	var basketTotal = basket.getTotalGrossPrice().value
 	
@@ -75,6 +122,18 @@ function calculateDonation(basket) {
 	return {'errorOccurred' : false};
 }
 
+function logView() {
+	var CustomObjectMgr = require('dw/object/CustomObjectMgr');
+	var Transaction = require('dw/system/Transaction');
+	var UUIDUtils = require('dw/util/UUIDUtils');
+	var uniqueID = UUIDUtils.createUUID();
+
+	Transaction.wrap(function () {
+		var customObject = CustomObjectMgr.createCustomObject("penniesViews", uniqueID);
+	});
+
+}
+
 /*
  * This function will return service object to make calculate donation call
  */
@@ -110,15 +169,62 @@ function getService(accessToken,merchantID,basketTotal){
 	
 }
 /*
+ * This function sends the report to Pennies Donation API
+ */
+function postReport(currency,dateTime,payments) {
+
+	var accountDetails = getAccountDetails();
+	var accessToken : String = accountDetails.penniesAccessToken;
+	var merchantID : String = accountDetails.penniesMerchantID;
+
+	var service  = LocalServiceRegistry.createService("pennies.report.http.service",{
+		createRequest: function(svc:HTTPService,body) {
+			var url = svc.getURL();
+
+			svc.addHeader('Access-Token', accessToken);
+			svc.addHeader('Access-Account', merchantID);
+			svc.addHeader('Content-Type', 'application/x-www-form-urlencoded');
+			svc.setRequestMethod("POST");
+			svc.setURL((svc.getURL()) + "/ped");
+			return body;
+		},
+		parseResponse: function(svc:HTTPService, output) {
+			return output;
+		},
+		getRequestLogMessage: function(reqObj:Object) {
+			return reqObj;
+		},
+		getResponseLogMessage: function(respObj : Object) {
+			var statusCode = respObj.statusCode;
+			var statusMessage = respObj.statusMessage;
+			var serviceResponse = respObj.text;
+			var errorMessage = respObj.errorText;
+			var responseMsg = "Send Pennies Report ::::: Response Code = " + statusCode +
+				" :::::  Response Message = " + statusMessage +
+				" :::::  Response = " + serviceResponse +
+				" ::::: Error Message " + errorMessage;
+			return responseMsg;
+		}
+	});
+
+	// Make the service call here
+	var body = "merchant_id=" + merchantID + "&store_id=default&tid=" + currency + "&report_datetime=" + dateTime + '&payments_count=' + payments;
+	var result: Result = service.call(body);
+
+	return checkIfAPICallFailed(result, ' Post Report');
+
+}
+/*
  * This function sends the donation amount to Pennies Donation API 
  */
 function postDonation(order, penniesDonationAmount) {
-	
-	var responseObj : JSON ;
-	
-	var accessToken : String = Site.getCurrent().getPreferences().getCustom()["penniesAccessToken"];
-	var merchantID : String = Site.getCurrent().getPreferences().getCustom()["penniesMerchantID"]; 
+
+	var accountDetails = getAccountDetails();
+	var accessToken : String = accountDetails.penniesAccessToken;
+	var merchantID : String = accountDetails.penniesMerchantID;
 	var penniesHashKey = order.custom.penniesHashKey;
+	var transactionId = order.orderNo;
+	var currencyCode;
 
 	var service  = LocalServiceRegistry.createService("pennies.donation.http.service",{
 		createRequest: function(svc:HTTPService,params) {
@@ -145,10 +251,21 @@ function postDonation(order, penniesDonationAmount) {
 								" ::::: Error Message " + errorMessage;
 			return responseMsg;	
 		} 
-	});	
+	});
+	switch (order.currencyCode) {
+		case 'GBP':
+			currencyCode = '826';
+			break;
+		case 'EUR':
+			currencyCode = '978';
+			break;
+		case 'USD':
+			currencyCode = '840';
+			break;
+	}
 	
 	// Make the service call here
-	var params = 'amount='+penniesDonationAmount+'&hash='+penniesHashKey;
+	var params = 'amount='+penniesDonationAmount+'&hash='+penniesHashKey+'&transaction_id='+transactionId+"&currency="+currencyCode;
 	var result: Result = service.call(params);
 	
 	return checkIfAPICallFailed(result, ' Post Donation');
@@ -164,8 +281,9 @@ function postDonation(order, penniesDonationAmount) {
 function retrievePenniesCharityDetails() {
 	
 	var responseObj : JSON ;
-	var accessToken : String = Site.getCurrent().getPreferences().getCustom()["penniesAccessToken"];
-	var merchantID : String = Site.getCurrent().getPreferences().getCustom()["penniesMerchantID"];
+	var accountDetails = getAccountDetails();
+	var accessToken : String = accountDetails.penniesAccessToken;
+	var merchantID : String = accountDetails.penniesMerchantID;
 
 	var amount = 10.1;
 	//Making the reference to a Pennies certificate imported in Business Manager -Not required in js controllers
@@ -251,11 +369,13 @@ function checkIfAPICallFailed(result, action) {
 function updateSessionValues(responseObj) {	
 	session.privacy.penniesHashKey = responseObj.hash;
     session.privacy.penniesDonationAmount = responseObj.donation_amount;
-    session.privacy.penniesCharities = JSON.stringify(responseObj.charities);        
+    session.privacy.penniesCharities = JSON.stringify(responseObj.charities);
 }
 
 module.exports = {
 	calculateDonation : calculateDonation,
 	postDonation : postDonation,
+	postReport : postReport,
+	getAccountDetails : getAccountDetails,
 	retrievePenniesCharityDetails : retrievePenniesCharityDetails
 }

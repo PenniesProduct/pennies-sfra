@@ -5,7 +5,7 @@
 
 <isif condition="${penniesDonationAmount.available}">
 	<tr class="pennies-donation">
-		<td>Pennies Donation</td>
+		<td>${Resource.msg('pennies.total.donation','pennies', null)}</td>
 		<td><isprint value="${penniesDonationAmount}"/></td>
 	</tr>
 </isif>

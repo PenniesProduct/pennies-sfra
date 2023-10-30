@@ -1,3 +1,4 @@
+/* globals session request */
 'use strict';
 
 var Transaction = require('dw/system/Transaction');
@@ -134,14 +135,24 @@ function monitorBasketChangesForPennies(basket) {
 	if(basket != null) {
 		
 		if(!PenniesUtil.isDonationAdded(basket)) return;
-		
-			
-		//Skip if pennies is not enabled or if the currency is not GBP and remove any donations which were there in basket
-		if(!dw.system.Site.current.preferences.custom.penniesDonationIntegrationEnabled || session.currency.currencyCode != 'GBP') {
+
+		//Skip if pennies is not enabled
+		if(!dw.system.Site.current.preferences.custom.penniesDonationIntegrationEnabled) {
 		
 			removeDonationFromBasket(basket);
 			
 			return;
+		}
+
+		//supported currency check
+		switch (session.currency.currencyCode) {
+			case 'GBP':
+			case 'EUR':
+			case 'USD':
+				break;
+			default:
+				removeDonationFromBasket(basket);
+				return
 		}
 		
 		if('skipPenniesMonitorBasket' in request.custom && request.custom.skipPenniesMonitorBasket) 
@@ -249,26 +260,13 @@ function updateShippingCosts(shippingCosts, basket) {
 function displayPenniesBanner() {
 
 	var renderingTemplate : String = '';
-   var displayInformPanelBanner = request.httpParameterMap.isParameterSubmitted('displayinformbanner') && (request.httpParameterMap.displayinformbanner.value == 'true');
-	
 	var basket = PenniesUtil.getBasket();
 	
 	if(basket == null) {
 		
 		renderingTemplate = 'banners/penniesemptybanner';
 		
-	} else if(displayInformPanelBanner) {
-		
-		//Display only the inform panel banner
-		if(empty(session.privacy.penniesCharities)){
-			
-			//Get the charity names
-			var apiResult = getCharityDetails();
-		}
-		
-		renderingTemplate = 'banners/penniesinformpanelbanner';
-		
-	} else if(PenniesUtil.isDonationAddedInBasket()) { 
+	} else if(PenniesUtil.isDonationAddedInBasket()) {
 		
 		renderingTemplate = 'banners/penniesdonationaddedbanner';
 		
@@ -291,7 +289,7 @@ function displayPenniesBanner() {
 			renderingTemplate = 'banners/penniesinvitetodonatebanner';
 		} else {
 			
-			renderingTemplate = 'banners/penniesinformpanelbanner';
+			renderingTemplate = 'banners/penniesemptybanner';
 		}
 	}
 	return renderingTemplate;
@@ -325,7 +323,8 @@ function clearSessionValues() {
 	delete session.privacy.penniesBasketTotal;
     delete session.privacy.penniesDonationAmount;
     delete session.privacy.penniesHashKey;
-    delete session.privacy.penniesCharities;
+	// this is later removed in the checkoutHelpers
+    //delete session.privacy.penniesCharities;
 }
 
 

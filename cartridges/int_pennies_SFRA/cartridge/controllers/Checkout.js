@@ -24,9 +24,12 @@ server.append('Begin',
                 var PenniesUtil = require('*/cartridge/scripts/util/PenniesUtil');
                 var shippingPriceExclDonation = PenniesUtil.getShippingPriceExcludingDonation(currentBasket);
                 var donationAmount = PenniesUtil.getPenniesDonationAmount(currentBasket);
+                var solicitationMessage = PenniesUtil.getSolicitationMessage();
                 viewData.order.penniesDonation = {
                     donationDisplayAmount: formatCurrency(donationAmount.value, req.session.currency.currencyCode),
                     donationAmount: donationAmount.value,
+                    soundBite: '',
+                    solicitationMessage: solicitationMessage,
                     shippingPriceExclDonation: shippingPriceExclDonation,
                     shippingPriceExclDonationAmount: formatCurrency(shippingPriceExclDonation.value, req.session.currency.currencyCode)
                 };

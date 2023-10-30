@@ -1,86 +1,131 @@
-.penniesDP {
-    height: 19.5em;
-    width: 9.875em;
+.penniesDonationDisplay {
+    width: 335px;
     border: 1px solid rgb(222, 222, 222);
+    border-radius:8px;
     line-height: 1.375em;
-    overflow: hidden;
-    background-color: rgb(255, 255, 255);
-    background-image: url(https://s3-eu-west-1.amazonaws.com/penniesfoundation/logos-v2/finger-light75.gif);
+    background-color: #F1F1F1;
     font-family: arial;
     position: relative;
-    background-position: 5em 0;
-    background-repeat: no-repeat;
+    overflow:hidden;
+    margin-bottom:10px;
+}
+.penniesLogos .penniesCharityLogo {
+    background:#fff;
+    display:flex;
+    justify-content: center;
+    padding:20px;
+}
+.penniesLogos .penniesCharityLogo img {
+    max-width: 150px;
+}
+.penniesLogos .penniesLogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.penniesLogos .penniesLogo img {
+    padding: 0 20px 0 0;
+    max-width: 150px;
+    @media (min-width: 1200px) {
+        padding:0;
+    }
+}
+.penniesLogos {
+    display: grid;
+    width: 100%;
+    background: #fff;
+    grid-template-columns: 1fr 1fr;
+    @media (min-width: 1200px) {
+        grid-template-columns: 1fr;
+
+    }
+}
+.penniesDonationDisplay #penniesCharityTitle {
+    font-size:28px;
+    line-height:36px;
+    margin:10px 10px 16px 10px;
 }
 
-.penniesDP h1 {
-    display: block;
-    position: absolute;
-    font-weight: normal;
-    margin: 0;
-    padding: 0;
-    color: rgb(122, 184, 66);
-    font-size: 1.125em;
-    width: 5.3em;
-    height: 6em;
-    top: 0.375em;
-    left: 0.5em;
+.penniesDonationDisplay h1 {
+    margin:10px;
+    color:#191C17;
+    font-size:16px;
+    font-family:arial;
+}
+
+.penniesDonationDisplay p#penniesCharityName {
+    color: #191C17;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
     font-family: arial;
-    line-height: 1.05em;
-}
-
-.penniesDP p#dpContent {
-    display: block;
-    position: absolute;
-    margin: 0;
-    padding: 0;
-    color: rgb(133, 133, 133);
-    font-size: 0.75em;
-    width: 12.5em;
-    height: 6.5em;
-    top: 18.5em;
-    left: 0.25em;
-    text-align: center;
-    font-family: arial;
-    line-height: 1.5em;
-}
-
-.penniesDP img {
-    height: 6.25em;
-    width: 6.25em;
-    top: 7em;
-    left: 1.875em;
-    position: absolute;
+    line-height:normal;
+    margin:10px;
 }
 
 #penniesMainContainer #penniesInvitePanelWrap #penniesIP {
     line-height: 1.75em;
-    border: 1px solid rgb(204, 204, 204);
-    width: 22.8em;
-    height: 15em;
+    border: 1px solid #D3D3D3;
     text-align: left;
-    font-size: 0.75em;
     margin: 1em 0;
-    background-color: rgb(255, 255, 255);
+    background-color: #F1F1F1;
     position: relative;
     font-family: arial;
+    overflow:hidden;
+}
+#penniesIP #penniesCharityTitle {
+    color: #191C17;
+    font-family: Arial;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 125% */
+    text-align:left;
+    margin:10px;
+}
+#penniesIP #penniesSolicationMessage {
+    color: #191C17;
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    line-height: normal;
+    margin:10px 10px 16px 10px;
 }
 
 #penniesMainContainer #penniesInvitePanelWrap #penniesIP div.penniesdonationdisplay {
-    text-indent: 0.75em;
-    position: absolute;
-    top: 0;
-    left: 0;
     text-align: center;
     color: rgb(122, 184, 66);
-    background-image: url(https://s3-eu-west-1.amazonaws.com/penniesfoundation/logos-v2/finger-invite-onestepcheckout.gif);
-    background-position: 0 0.625em;
-    background-repeat: no-repeat no-repeat;
+    background-color: #F1F1F1;
 }
 
-#penniesMainContainer #penniesInvitePanelWrap #penniesIP #ipProposal {
-    width: 100%;
-    font-size: 1.5em;
-    padding: 4.3em 2em 0;
+#penniesInvitePanelWrap #penniesCharityHeading {
+    color: #000;
+    font-family: Arial;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 36px; /* 128.571% */
+    margin:15px 10px 10px 10px;
+}
+#penniesInvitePanelWrap .penniesCharityTitle {
+    font-weight:bold;
+}
+#penniesInvitePanelWrap #penniesGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    @media (min-width: 1200px) {
+        grid-template-columns: 1fr 1fr;
+
+    }
+}
+#penniesInvitePanelWrap .penniesInner {
+    padding:10px;
+}
+
+#penniesInvitePanelWrap .penniesFindOutMore {
+    font-size: 14px;
+    color: #000 !important;
+    text-decoration: underline !important;
 }
 
 #penniesMainContainer #penniesInvitePanelWrap #penniesIP #ipConfirmation {
@@ -91,15 +136,10 @@
 
 #penniesMainContainer #penniesInvitePanelWrap #penniesIP img {
     display: block;
-    position: absolute;
-    top: 0.35em;
-    right: 0.35em;
 }
 
-#penniesMainContainer #penniesInvitePanelWrap #penniesIP #ipTerms {
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP #penniesIpTerms {
     min-height: 1.875em;
-    bottom: 0;
-    position: absolute;
     display: block;
     padding: 0.6em 0.625em 0.6em 7.5em;
     font-size: 0.67em;
@@ -111,28 +151,49 @@
     background-repeat: no-repeat no-repeat;
 }
 
-#penniesMainContainer #penniesInvitePanelWrap #penniesIP span#penniesInviteBtn,
-#penniesMainContainer #penniesInvitePanelWrap #penniesIP span#penniesRemoveBtn {
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP #penniesInviteBtn,
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP #penniesRemoveBtn {
+    display: flex;
+    width: 315px;
+    height: 48px;
+    padding: 10px 48px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 56px;
+    background: #7AB842;
+    text-transform: uppercase;
+    border: 2px solid #bbdc9f;
+    margin:32px 10px;
+    cursor:pointer;
+}
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP #penniesRemoveBtn {
+    background: #e5e5e5;
+    border: 2px solid #e3e4e3;
+}
+
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP #penniesInviteBtn span,
+#penniesMainContainer #penniesInvitePanelWrap #penniesIP #penniesRemoveBtn span {
+    color: #000;
     text-align: center;
-    box-shadow: rgb(153, 153, 153) 0.1em 0.1em 0.1em;
-    font-weight: bold;
-    font-size: 1.5em;
-    position: absolute;
-    top: 0.75em;
-    left: 4.2em;
-    line-height: 2.1em;
-    width: 5.1em;
-    padding: 0.13em 0.36em;
-    color: white;
-    cursor: pointer;
-    border: 1px solid rgb(100, 152, 55);
-    border-radius: 0.65em;
-    background-image: linear-gradient(rgb(179, 243, 129) 0%, rgb(130, 195, 76) 20%, rgb(130, 195, 76) 85%, rgb(114, 170, 73) 100%);
-    background-position: initial initial;
-    background-repeat: initial initial;
+    font-family: Arial;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.32px;
 }
 
 #penniesMainContainer #penniesInvitePanelWrap #penniesIP span#penniesAmount {
     font-weight: bold;
     color: rgb(91, 40, 77);
+}
+.penniesCharitySoundBite {
+    color: #191C17;
+    font-family: Arial;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 125% */
+    margin:10px 10px 16px 10px;
 }

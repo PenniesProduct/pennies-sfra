@@ -1,9 +1,9 @@
 <!--- TEMPLATENAME: penniesdonationbanner.isml --->
 
 
- <isif condition="${ dw.system.Site.getCurrent().getCustomPreferenceValue('penniesDonationIntegrationEnabled') && pdict.CurrentSession.currency.currencyCode == 'GBP' }" >
+ <isif condition="${ dw.system.Site.getCurrent().getCustomPreferenceValue('penniesDonationIntegrationEnabled') && (pdict.CurrentSession.currency.currencyCode == 'GBP' || pdict.CurrentSession.currency.currencyCode == 'EUR'|| pdict.CurrentSession.currency.currencyCode == 'USD') }" >
  	
- 	<iscomponent pipeline="Pennies-DisplayBanner" displayinformbanner="${'p_display_inform_banner' in pdict ? pdict.p_display_inform_banner : 'false'}"/>
+ 	<iscomponent pipeline="Pennies-DisplayBanner"/>
  	
  </isif>
  	 

@@ -21,7 +21,7 @@ var bootstrapPackages = {
     // Tooltip: 'exports-loader?Tooltip!bootstrap/js/src/tooltip',
     Util: 'exports-loader?Util!bootstrap/js/src/util'
 };
-var cartridgePath = './catridges/int_pennies_SFRA/cartridge/';
+var cartridgePath = './cartridges/int_pennies_SFRA/cartridge/';
 
 module.exports = [{
     mode: 'development',

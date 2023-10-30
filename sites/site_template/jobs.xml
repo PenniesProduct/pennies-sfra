@@ -40,4 +40,23 @@
             </run-once>
         </triggers>
     </job>
+
+    <job job-id="Pennies - Solicitation Reporting" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="Post Pennies Report" type="custom.PostPenniesReport" enforce-restart="false">
+                <description>This step exports the order count to pennies via api calls</description>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-once enabled="false">
+                <date>2017-09-11Z</date>
+                <time>11:46:42.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
 </jobs>

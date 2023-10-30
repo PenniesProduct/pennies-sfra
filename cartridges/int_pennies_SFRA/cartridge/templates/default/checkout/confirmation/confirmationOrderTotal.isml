@@ -29,7 +29,7 @@ ${Resource.msg('label.order.shipping.cost','confirmation', null)}:
 
 <iscomment>Start Pennies donation Changes</iscomment>
 <isif condition="${pdict.penniesDonation.donationAmount !== 0}">
-    Pennies Donation:
+    ${Resource.msg('pennies.total.donation','pennies', null)}:
      ${pdict.penniesDonation.donationDisplayAmount}
     <br/>
 </isif>

@@ -12,6 +12,14 @@ var BasketMgr = require('dw/order/BasketMgr');
 
 var PenniesUtil = {};
 
+PenniesUtil.getSoundBite = function (order) {
+	var soundBite = '';
+	if (order.custom.penniesCharityDetails) {
+		var soundBiteJson = JSON.parse(order.custom.penniesCharityDetails);
+		soundBite = Array.isArray(soundBiteJson) && soundBiteJson[0].soundbite_message;
+	}
+	return soundBite;
+}
 /**
  * 
  * This function calculates the shipping price without the donation amount in it if the donation is
@@ -60,6 +68,87 @@ PenniesUtil.getPenniesDonationAmount = function(lineItemCtnr : dw.order.LineItem
 	return donationAmount;
 	
 }
+/**
+ * This function returns the pennies charity soundbite returned by the API call which is set in the session.
+ * This value is used to display in the pennies banners.
+ */
+PenniesUtil.getCharitySoundBite = function() {
+
+	var soundBite = '';
+
+	if(!empty(session.privacy.penniesCharities)) {
+
+		var charities = JSON.parse(session.privacy.penniesCharities);
+		soundBite = charities[0]['soundbite_message'];
+	}
+
+	return soundBite;
+}
+
+/**
+ * This function returns the pennies charity title returned by the API call which is set in the session.
+ * This value is used to display in the pennies banners.
+ */
+PenniesUtil.getSolicitationMessage = function() {
+
+	var solicitationMessage = '';
+
+	if(!empty(session.privacy.penniesCharities)) {
+
+		var charities = JSON.parse(session.privacy.penniesCharities);
+		solicitationMessage = charities[0]['solicitation_message'];
+	}
+
+	return solicitationMessage;
+}
+/**
+ * This function returns the pennies charity url returned by the API call which is set in the session.
+ * This value is used to display in the pennies banners.
+ */
+PenniesUtil.getCharityUrl = function() {
+
+	var charityUrl = '';
+
+	if(!empty(session.privacy.penniesCharities)) {
+
+		var charities = JSON.parse(session.privacy.penniesCharities);
+		charityUrl = charities[0]['url'];
+	}
+
+	return charityUrl;
+}
+/**
+ * This function returns the pennies charity heading returned by the API call which is set in the session.
+ * This value is used to display in the pennies banners.
+ */
+PenniesUtil.getCharityHeading = function() {
+
+	var charityHeading = '';
+
+	if(!empty(session.privacy.penniesCharities)) {
+
+		var charities = JSON.parse(session.privacy.penniesCharities);
+		charityHeading = charities[0]['heading'];
+	}
+
+	return charityHeading;
+}
+/**
+ * This function returns the pennies charity title returned by the API call which is set in the session.
+ * This value is used to display in the pennies banners.
+ */
+PenniesUtil.getCharityTitle = function() {
+
+	var charityTitle = '';
+
+	if(!empty(session.privacy.penniesCharities)) {
+
+		var charities = JSON.parse(session.privacy.penniesCharities);
+		charityTitle = charities[0]['title'];
+	}
+
+	return charityTitle;
+}
 
 /**
  * This function returns the pennies charity names returned by the API call which is set in the session.
@@ -72,9 +161,7 @@ PenniesUtil.getCharityNames = function() {
 	if(!empty(session.privacy.penniesCharities)) {
 		
 		var charities = JSON.parse(session.privacy.penniesCharities);
-		charityNames = charities.map(function(charity) {
-							return charity.name;
-						}).join(",");
+		charityNames = charities[0]['name'];
 	}
 	
 	return charityNames;
@@ -134,16 +221,15 @@ PenniesUtil.getBasket = function() {
 
 
 PenniesUtil.getDonationDisplayAmount = function(donationAmount) {
-	
-	var displayDonationAmount = '';
-	
-	if(donationAmount < 1) {
-			
-		displayDonationAmount = (new Number(donationAmount) * 100).toFixed(0) + 'p'; 
-		
+
+	if(donationAmount < 1 && session.currency.currencyCode == 'GBP') {
+
+		displayDonationAmount = (new Number(donationAmount) * 100).toFixed(0) + 'p';
+
 	} else {
-		
-		displayDonationAmount = '&pound;' + new Number(donationAmount.toFixed(2));
+		var formatCurrency = require('*/cartridge/scripts/util/formatting').formatCurrency;
+		var displayDonationAmount = '';
+		displayDonationAmount = formatCurrency(donationAmount, session.currency.currencyCode);
 	}
 	
 	return displayDonationAmount;

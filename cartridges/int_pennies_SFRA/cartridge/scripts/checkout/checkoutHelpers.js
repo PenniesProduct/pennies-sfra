@@ -19,9 +19,16 @@ base.sendConfirmationEmail = function (order, locale) {
     var shippingPriceExclDonation = PenniesUtil.getShippingPriceExcludingDonation(order);
     var donationAmount = PenniesUtil.getPenniesDonationAmount(order);
     var currencyCode = order.currencyCode;
+    var soundBite = '';
+
+    if (session.privacy.penniesCharities && donationAmount.value !== 0) {
+        var soundBiteJson = JSON.parse(session.privacy.penniesCharities);
+        soundBite = Array.isArray(soundBiteJson) && soundBiteJson[0].soundbite_message;
+    }
     var penniesDonation = {
         donationDisplayAmount: formatCurrency(donationAmount.value, currencyCode),
         donationAmount: donationAmount.value,
+        soundBite:soundBite,
         shippingPriceExclDonation: shippingPriceExclDonation,
         shippingPriceExclDonationAmount: formatCurrency(shippingPriceExclDonation.value, currencyCode)
     };
@@ -33,6 +40,9 @@ base.sendConfirmationEmail = function (order, locale) {
         from: Site.current.getCustomPreferenceValue('customerServiceEmail') || 'no-reply@salesforce.com',
         type: emailHelpers.emailTypes.orderConfirmation
     };
+
+    delete session.privacy.penniesCharities;
+
     emailHelpers.sendEmail(emailObj, 'checkout/confirmation/confirmationEmail', orderObject);
 };
 

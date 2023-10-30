@@ -1,0 +1,22 @@
+var HttpClient = require('dw/net/HttpClient');
+
+function sendPostRequest(params,accountDetails) {
+
+    var accessToken : String = accountDetails.penniesAccessToken;
+    var merchantID : String = accountDetails.penniesMerchantID;
+
+    var client = new HttpClient();
+    client.setRequestMethod("POST");
+    client.addHeader('Access-Token', accessToken);
+    client.addHeader('Access-Account', merchantID);
+    client.addHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    var url = 'http://testapi.pennies.org.uk/v1.1/ped';
+    var response = client.send(url, params);
+
+    return response;
+}
+
+module.exports = {
+    sendPostRequest: sendPostRequest
+};

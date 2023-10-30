@@ -1,33 +1,55 @@
-<!--- TEMPLATENAME: penniesinvitetodonate.isml --->
-<isinclude template="util/modules"/>
+<div id="penniesInvitePanelWrap">
+	<div id="penniesIP">
+		<div id="penniesGrid">
+			<div class="penniesInner">
 
-<isscript>
-	var PenniesUtil = require('~/cartridge/scripts/util/PenniesUtil');
-	var displayDonationAmount = PenniesUtil.getDonationDisplayAmount(session.privacy.penniesDonationAmount);
-</isscript>
+				<iscomment>Pennies charity heading</iscomment>
+				<isif condition="${!empty(pdict.CharityHeading)}">
+					<p id="penniesCharityHeading">
+						${pdict.CharityHeading}
+					</p>
+				</isif>
 
-<div id="penniesMainContainer">
-	<div id="penniesInvitePanelWrap"> 
-	        <div id="penniesIP" > 
-	            
-	            <iscomment>Pennies donation amount</iscomment>
-        		<div id="ipProposal" class="penniesdonationdisplay">
-	            	${Resource.msg('pennies.invitepanel.justpay', 'pennies', null)} <span id="penniesAmount" >${displayDonationAmount}</span> ${Resource.msg('pennies.invitepanel.tocharity', 'pennies', null)}
-	            </div>  
-	             
-	            <iscomment>Pennies charity logo</iscomment>
-        		<isif condition="${!empty(PenniesUtil.getCharityLogoId())}">
-	         		<isset name="charityLogoUrl" value="${'https://s3-eu-west-1.amazonaws.com/penniesfoundation/charities/' + PenniesUtil.getCharityLogoId() + '-75.png'}" scope="page" />
-	         		<img src="${charityLogoUrl}">
-	         	</isif>
-	         	
-	            <iscomment>Pennies charity names</iscomment>
-        		<div id="ipTerms" > 
-	                ${StringUtils.format(Resource.msg('pennies.invitepanel.charity', 'pennies', null), PenniesUtil.getCharityNames())}
-	            </div> 
-	            
-	            <!--PENNIES: onclick method in the following span should invoke your code that adds the donation. --> 
-	            <span id="penniesInviteBtn">${Resource.msg('pennies.invitepanel.donatebtn', 'pennies', null)}</span> 
-	  		</div> 
-	  </div>
-  </div>
+				<isif condition="${!empty(pdict.CharitySoundBite)}">
+					<p class="penniesCharitySoundBite">
+						${pdict.CharitySoundBite}
+						<isif condition="${!empty(pdict.CharityUrl)}"><a href="${pdict.CharityUrl}"
+																		 class="penniesFindOutMore">${Resource.msg('pennies.invitepanel.findoutmore', 'pennies', null)}</a>
+						</isif>
+					</p>
+				</isif>
+
+				<!--PENNIES: onclick method in the following span should invoke your code that adds the donation. -->
+				<div id="penniesInviteBtn" data-inviteurl="${URLUtils.https('Pennies-AddDonation')}">
+					<span>${StringUtils.format(Resource.msg('pennies.invitepanel.donatebtn', 'pennies', null), pdict.displayDonationAmount)}</span>
+				</div>
+
+				<iscomment>Pennies charity solicitation</iscomment>
+				<div id="penniesSolicationMessage">
+					<isif condition="${!empty(pdict.CharityTitle)}">
+						<span class="penniesCharityTitle">
+							${pdict.CharityTitle}
+						</span>
+					</isif>
+					${pdict.solicitationMessage}
+				</div>
+			</div>
+
+			<iscomment>Pennies charity logo</iscomment>
+			<isif condition="${!empty(pdict.CharityLogo)}">
+				<isset name="charityLogoUrl"
+					   value="${'https://s3-eu-west-1.amazonaws.com/penniesfoundation/charities/' + pdict.CharityLogo + '-250.png'}"
+					   scope="page"/>
+				<div class="penniesLogos">
+					<div class="penniesCharityLogo"><img src="${charityLogoUrl}"></div>
+					<div class="penniesLogo"><img
+							src="https://s3-eu-west-1.amazonaws.com/penniesfoundation/charities/00000000-250.png"/></div>
+				</div>
+			</isif>
+
+
+		</div>
+
+
+	</div>
+</div>

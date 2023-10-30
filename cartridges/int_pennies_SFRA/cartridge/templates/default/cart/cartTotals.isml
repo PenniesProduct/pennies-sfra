@@ -28,7 +28,7 @@
 <iscomment>Start Pennies donation Changes</iscomment>
 <div class="row donation-item <isif condition="${!pdict.penniesDonation.donationAmount.available}">hide-shipping-discount </isif>">
    <div class="col-8">
-        <p>Pennies Donation</p>
+        <p>${Resource.msg('pennies.total.donation','pennies', null)}</p>
     </div>
     <div class="col-4">
         <p class="text-right">${pdict.penniesDonation.donationDisplayAmount}</p>

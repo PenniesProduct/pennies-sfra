@@ -13,6 +13,7 @@ var guard = require('*/cartridge/scripts/guard');
 var app = require('*/cartridge/scripts/app');
 var libPennies = require('*/cartridge/scripts/common/libPennies');
 var PenniesUtil = require('*/cartridge/scripts/util/PenniesUtil');
+var PenniesApi = require('*/cartridge/scripts/libPenniesAPI');
 var Transaction = require('dw/system/Transaction');
 
 
@@ -29,7 +30,8 @@ function displayBanner() {
 	
 	var basket = PenniesUtil.getBasket();
 	var renderingTemplate ='';
-	if(Site.current.getCustomPreferenceValue('penniesAccessToken') == null  || Site.current.getCustomPreferenceValue('penniesMerchantID') == null ){
+	var accountDetails = PenniesApi.getAccountDetails();
+	if(accountDetails.penniesAccessToken == null  || accountDetails.penniesMerchantID == null ){
 		renderingTemplate = 'banners/penniesemptybanner';
 	}else{
 		 renderingTemplate = libPennies.displayPenniesBanner();

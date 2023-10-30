@@ -92,10 +92,5 @@
     <div class="container">
         <isslot id="cart-recommendations-m" description="Recommended products" context="global" />
     </div>
-    <iscomment>Start Pennies donation Changes</iscomment>
-     <div class="container" data-penniesurl="${URLUtils.https('Pennies-DisplayBanner','displayinformbanner','true')}"  data-summaryurl="${URLUtils.https('Pennies-UpdateSummary','displayinformbanner','false')}"  id="displaypennies">
-    	<isinclude template="pennies/displayinformpanel"/>
-   	 </div>
-   	 <iscomment>End Pennies donation Changes</iscomment>
    	 
 </isdecorate>

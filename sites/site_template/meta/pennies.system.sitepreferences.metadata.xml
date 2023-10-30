@@ -2,6 +2,32 @@
 <metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
 	<type-extension type-id="SitePreferences">
  		<custom-attribute-definitions>
+            <attribute-definition attribute-id="penniesTestAccount">
+                <display-name xml:lang="x-default">Pennies Test Accounts</display-name>
+                <description xml:lang="x-default">Pre-defined test accounts for testing, selecting an option will override details below</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Top Up Fixed 25p</display>
+                        <value>TEST1</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Round Up to Pound</display>
+                        <value>TEST2</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Flexi to pound or fixed 25p</display>
+                        <value>TEST3</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Banded</display>
+                        <value>TEST4</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
  			<attribute-definition attribute-id="penniesAccessToken">
                 <display-name xml:lang="x-default">Pennies Access Token</display-name>
                 <description xml:lang="x-default">Pennies Access Token</description>
@@ -30,6 +56,7 @@
     	<group-definitions>
     		<attribute-group group-id="Pennies">
                 <display-name xml:lang="x-default">Pennies</display-name>
+                <attribute attribute-id="penniesTestAccount"/>
                 <attribute attribute-id="penniesAccessToken"/>
                 <attribute attribute-id="penniesDonationIntegrationEnabled"/>
                 <attribute attribute-id="penniesMerchantID"/>

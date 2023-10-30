@@ -2,6 +2,50 @@
     "step-types": {
         "script-module-step" : [
 			{
+				"@type-id":"custom.PostPenniesReport",
+				"@supports-parallel-execution":"true",
+				"@supports-site-context":"true",
+				"@supports-organization-context":"false",
+				"description":"Pennies - Solicitation Reporting",
+				"module":"int_pennies_core/cartridge/scripts/job/PenniesJobAdapter.js",
+				"function":"postPenniesReport",
+				"transactional":"false",
+				"timeout-in-seconds":"900",
+				"parameters": {
+					"parameters": [
+						{
+							"@name": "ReportStartDate",
+							"description": "Report Start Date",
+							"@type": "date-string",
+							"@required": false
+						},
+						{
+							"@name": "ReportEndDate",
+							"description": "Report End Date",
+							"@type": "date-string",
+							"@required": false
+						}
+					]
+				},
+				"status-codes": {
+					"status":
+					[
+						{
+							"@code": "ERROR",
+							"description": "Used when the step failed with an error."
+						},
+						{
+							"@code": "FINISHED",
+							"description": "Used when the step finished successfully."
+						},
+						{
+							"@code": "FINISHED_WITH_WARNINGS",
+							"description": "Used when the step finished with warnings."
+						}
+					]
+				}
+			},
+			{
 				"@type-id":"custom.PostPenniesDonation",
 				"@supports-parallel-execution":"true",
 				"@supports-site-context":"true",

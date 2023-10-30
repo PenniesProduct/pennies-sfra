@@ -1,15 +1,5 @@
 <iscontent type="text/html" charset="UTF-8" compact="true"/>
 
-<iscomment>
-	This custom tag displays the appropriate pennies donation banner 
-	based on the values in the session and the basket total
-	
-	 - p_display_inform_banner : Set to true if only inform panel banner should be displayed
-</iscomment>
-<ismodule template="tags/displaypenniesbanner.isml"
-	name="displaypenniesbanner"
-	attribute="p_display_inform_banner"
-/>
 
 <iscomment>
 	This custom tag displays the actual shipping price excluding the pennies donation

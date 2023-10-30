@@ -17,16 +17,18 @@ server.append(
         var viewData = res.getViewData();
         if (viewData.order) {
             var OrderMgr = require('dw/order/OrderMgr');
-            var order = OrderMgr.getOrder(req.querystring.ID);
+            var order = OrderMgr.getOrder(req.form.orderID, req.form.orderToken);
             var formatCurrency = require('*/cartridge/scripts/util/formatting').formatCurrency;
             var PenniesUtil = require('*/cartridge/scripts/util/PenniesUtil');
             var shippingPriceExclDonation = PenniesUtil.getShippingPriceExcludingDonation(order);
             var donationAmount = PenniesUtil.getPenniesDonationAmount(order);
+            var soundBite = PenniesUtil.getSoundBite(order);
             viewData.order.penniesDonation = {
-                donationDisplayAmount: formatCurrency(donationAmount.value, req.session.currency.currencyCode),
+                donationDisplayAmount: formatCurrency(donationAmount.value, order.currencyCode),
                 donationAmount: donationAmount.value,
+                soundBite: soundBite,
                 shippingPriceExclDonation: shippingPriceExclDonation,
-                shippingPriceExclDonationAmount: formatCurrency(shippingPriceExclDonation.value, req.session.currency.currencyCode)
+                shippingPriceExclDonationAmount: formatCurrency(shippingPriceExclDonation.value, order.currencyCode)
             };
             res.setViewData(viewData);
         }

@@ -44,8 +44,8 @@ function updateTotals(penniesDonation) {
  * donate button
  */
 function donateToPennies() {
-    if ($('span#penniesInviteBtn').length > 0) {
-        var donateToPenniesUrl = $('span#penniesInviteBtn').data('inviteurl');
+    if ($('div#penniesInviteBtn').length > 0) {
+        var donateToPenniesUrl = $('div#penniesInviteBtn').data('inviteurl');
         $.spinner().start();
         $.ajax({
             dataType: 'json',
@@ -66,8 +66,8 @@ function donateToPennies() {
  * remove button
  */
 function removeDonation() {
-    if ($('span#penniesRemoveBtn').length > 0) {
-        var removePenniesDonationUrl = $('span#penniesRemoveBtn').data('removeurl');
+    if ($('div#penniesRemoveBtn').length > 0) {
+        var removePenniesDonationUrl = $('div#penniesRemoveBtn').data('removeurl');
         $.spinner().start();
         $.ajax({
             dataType: 'json',
@@ -150,8 +150,8 @@ function checkCartActionUpdates() {
 }
 module.exports = {
     init: function () {
-        $('body').on('click', 'span#penniesRemoveBtn', removeDonation);
-        $('body').on('click', 'span#penniesInviteBtn', donateToPennies);
+        $('body').on('click', 'div#penniesRemoveBtn', removeDonation);
+        $('body').on('click', 'div#penniesInviteBtn', donateToPennies);
     },
     refreshBannerInfo: function () {
         refreshBanner();

@@ -37,4 +37,14 @@
         <credential-id>pennies.http.credentials</credential-id>
     </service>
 
+    <service service-id="pennies.report.http.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix>penniesreport</log-prefix>
+        <comm-log-enabled>true</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>pennies.http.profile</profile-id>
+        <credential-id>pennies.http.credentials</credential-id>
+    </service>
+
 </services>

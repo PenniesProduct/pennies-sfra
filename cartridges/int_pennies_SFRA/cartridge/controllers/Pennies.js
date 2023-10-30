@@ -4,6 +4,7 @@ var server = require('server');
 
 var libPennies = require('*/cartridge/scripts/common/libPennies');
 var PenniesUtil = require('*/cartridge/scripts/util/PenniesUtil');
+var PenniesApi = require('*/cartridge/scripts/libPenniesAPI');
 var Site = require('dw/system/Site');
 /**
  * This function gets the pennies banner contents.
@@ -12,8 +13,9 @@ var Site = require('dw/system/Site');
  * amount is greater than 0 then display Invite to donate banner else Pennies Inform banner
  */
 server.get('DisplayBanner', server.middleware.https, function (req, res, next) {
-    if (Site.current.getCustomPreferenceValue('penniesDonationIntegrationEnabled') && req.session.currency.currencyCode === 'GBP') {
-        if (Site.current.getCustomPreferenceValue('penniesAccessToken') === null || Site.current.getCustomPreferenceValue('penniesMerchantID') === null) {
+    var accountDetails = PenniesApi.getAccountDetails();
+    if (Site.current.getCustomPreferenceValue('penniesDonationIntegrationEnabled') && (req.session.currency.currencyCode == 'GBP' || req.session.currency.currencyCode == 'EUR' || req.session.currency.currencyCode == 'USD')) {
+        if (accountDetails.penniesAccessToken === null || accountDetails.penniesMerchantID === null) {
             res.render('banners/penniesemptybanner', {});
         } else {
             var BasketMgr = require('dw/order/BasketMgr');
@@ -22,14 +24,21 @@ server.get('DisplayBanner', server.middleware.https, function (req, res, next) {
             var renderingTemplate = libPennies.displayPenniesBanner();
             var donationDisplayAmount = null;
             var donationAmount = PenniesUtil.getPenniesDonationAmount(currentBasket);
+            var solicitationMessage = PenniesUtil.getSolicitationMessage();
             if (donationAmount !== null) {
                 donationDisplayAmount = PenniesUtil.getDonationDisplayAmount(donationAmount.value);
             }
+
             res.render(renderingTemplate, {
                 CharityName: PenniesUtil.getCharityNames(),
+                CharityTitle: PenniesUtil.getCharityTitle(),
+                CharityHeading: PenniesUtil.getCharityHeading(),
+                CharityUrl: PenniesUtil.getCharityUrl(),
                 CharityLogo: PenniesUtil.getCharityLogoId(),
+                CharitySoundBite: PenniesUtil.getCharitySoundBite(),
                 displayDonationAmount: PenniesUtil.getDonationDisplayAmount(req.session.privacyCache.get('penniesDonationAmount')),
-                donationDisplayAmount: donationDisplayAmount
+                donationDisplayAmount: donationDisplayAmount,
+                solicitationMessage: solicitationMessage
             });
         }
     } else {
@@ -44,7 +53,7 @@ server.get('DisplayBanner', server.middleware.https, function (req, res, next) {
  * to basket. Gets the new banner contents.
  */
 server.get('AddDonation', server.middleware.https, function (req, res, next) {
-    if (Site.current.getCustomPreferenceValue('penniesDonationIntegrationEnabled') && req.session.currency.currencyCode === 'GBP') {
+    if (Site.current.getCustomPreferenceValue('penniesDonationIntegrationEnabled') && (req.session.currency.currencyCode == 'GBP' || req.session.currency.currencyCode == 'EUR' || req.session.currency.currencyCode == 'USD')) {
         var BasketMgr = require('dw/order/BasketMgr');
         var currentBasket = BasketMgr.getCurrentBasket();
         var Transaction = require('dw/system/Transaction');
@@ -82,7 +91,8 @@ server.get('AddDonation', server.middleware.https, function (req, res, next) {
  * from basket. Gets the new banner contents.
  */
 server.get('RemoveDonation', server.middleware.https, function (req, res, next) {
-    if (Site.current.getCustomPreferenceValue('penniesDonationIntegrationEnabled') && req.session.currency.currencyCode === 'GBP') {
+    if (Site.current.getCustomPreferenceValue('penniesDonationIntegrationEnabled') && (req.session.currency.currencyCode == 'GBP' || req.session.currency.currencyCode == 'EUR' || req.session.currency.currencyCode == 'USD')) {
+
         var process = 0;
         var BasketMgr = require('dw/order/BasketMgr');
         var Transaction = require('dw/system/Transaction');
@@ -122,7 +132,7 @@ server.get('RemoveDonation', server.middleware.https, function (req, res, next) 
  * This function is updated order total summary with pennies donation amount
  */
 server.get('UpdateSummary', server.middleware.https, function (req, res, next) {
-    if (Site.current.getCustomPreferenceValue('penniesDonationIntegrationEnabled') && req.session.currency.currencyCode === 'GBP') {
+    if (Site.current.getCustomPreferenceValue('penniesDonationIntegrationEnabled') && (req.session.currency.currencyCode == 'GBP' || req.session.currency.currencyCode == 'EUR' || req.session.currency.currencyCode == 'USD')) {
         var BasketMgr = require('dw/order/BasketMgr');
         var currentBasket = BasketMgr.getCurrentBasket();
         var formatCurrency = require('*/cartridge/scripts/util/formatting').formatCurrency;

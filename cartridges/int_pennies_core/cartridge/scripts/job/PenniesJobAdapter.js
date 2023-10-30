@@ -16,6 +16,119 @@ var FileWriter = require('dw/io/FileWriter');
 var CSVStreamWriter = require('dw/io/CSVStreamWriter');
 
 /**
+ * This function for post all transactions
+ */
+function postPenniesReport(parameters, stepExecution) {
+
+	var reportStartDate = parameters.ReportStartDate || null;
+	var reportEndDate = parameters.ReportEndDate || null;
+
+	var todayStart = new dw.util.Calendar();
+	todayStart.set(Calendar.HOUR_OF_DAY, 0);
+	todayStart.set(Calendar.MINUTE, 0);
+	todayStart.set(Calendar.SECOND, 0);
+	todayStart.set(Calendar.MILLISECOND, 0);
+
+	var todayEnd = new dw.util.Calendar();
+	todayEnd.set(Calendar.HOUR_OF_DAY, 23);
+	todayEnd.set(Calendar.MINUTE, 59);
+	todayEnd.set(Calendar.SECOND, 59);
+	todayEnd.set(Calendar.MILLISECOND, 999);
+
+	// Assuming reportStartDate and reportEndDate are provided (either null or with a value)
+	var startDate;
+	var endDate;
+
+	if (reportStartDate) {
+		startDate = new Calendar(reportStartDate);
+		startDate.set(Calendar.HOUR_OF_DAY, 0);
+		startDate.set(Calendar.MINUTE, 0);
+		startDate.set(Calendar.SECOND, 0);
+		startDate.set(Calendar.MILLISECOND, 0);
+	} else {
+		startDate = todayStart;
+	}
+
+	if (reportEndDate) {
+		endDate = new Calendar(reportEndDate);
+		endDate.set(Calendar.HOUR_OF_DAY, 23);
+		endDate.set(Calendar.MINUTE, 59);
+		endDate.set(Calendar.SECOND, 59);
+		endDate.set(Calendar.MILLISECOND, 999);
+	} else {
+		endDate = todayEnd;
+	}
+
+	// select all success order in the time range
+	var PenniesOrders = OrderMgr.searchOrders(
+		'(creationDate >= {0} AND creationDate <= {1}) AND (status != {2} AND status != {3})',
+		'orderNo desc',
+		startDate.time,
+		endDate.time,
+		Order.ORDER_STATUS_CREATED,
+		Order.ORDER_STATUS_FAILED
+	);
+	var PenniesOrdersCount : Number = PenniesOrders.count;
+
+	if(PenniesOrdersCount<=0)
+		return new dwsystem.Status(dwsystem.Status.OK, "NO_ORDERS_FOUND", "Report Job completed successfully. No orders were found");
+
+	const orderCurrencyCounts = {
+		826:0,
+		978:0,
+		840:0
+	};
+	while (PenniesOrders.hasNext()) {
+		var order = PenniesOrders.next();
+		var currencyCode;
+		switch (order.currencyCode) {
+			case 'GBP':
+				currencyCode = '826';
+				break;
+			case 'EUR':
+				currencyCode = '978';
+				break;
+			case 'USD':
+				currencyCode = '840';
+				break;
+			default:
+				continue;
+		}
+		orderCurrencyCounts[currencyCode] += 1;
+	}
+	PenniesOrders.close();
+
+	var year = endDate.get(Calendar.YEAR);
+	var month = String(endDate.get(Calendar.MONTH) + 1).padStart(2, '0'); // +1 because months are 0-based in Java's Calendar
+	var day = String(endDate.get(Calendar.DATE)).padStart(2, '0');
+	var hour = String(endDate.get(Calendar.HOUR_OF_DAY)).padStart(2, '0');
+	var minute = String(endDate.get(Calendar.MINUTE)).padStart(2, '0');
+	var second = String(endDate.get(Calendar.SECOND)).padStart(2, '0');
+
+	var dateTime = `${year}-${month}-${day}T${hour}:${minute}:${second}Z`;
+
+
+	var isError = '';
+
+	for(var currency in orderCurrencyCounts) {
+		if(orderCurrencyCounts[currency] > 0) {
+			var apiResult = libPenniesAPI.postReport(currency, dateTime, orderCurrencyCounts[currency]);
+			if(apiResult.errorOccurred){
+				isError = apiResult.errorOccurred;
+			}
+		}
+	}
+
+	if(!isError){
+		return new dwsystem.Status(dwsystem.Status.OK, "JOB_SUCCESS", "Job completed successfully.");
+	}else{
+		var logMessage = isError.join('\n');
+		Logger.error("Job finished with errors. {0}",logMessage);
+	}
+
+	return new dwsystem.Status(dwsystem.Status.ERROR, "JOB_ERROR", "Job finished with errors." );
+}
+/**
  * This function for post donation transaction
  */  	
 function postPenniesDonation(parameters, stepExecution) {
@@ -25,7 +138,8 @@ function postPenniesDonation(parameters, stepExecution) {
 	// select all success order with pennies donation status readytoexport
  	var PenniesOrders : SeekableIterator = OrderMgr.searchOrders(' custom.penniesDonationStatus = {0} AND ( status != {1} OR status != {2} )','orderNo desc','readytoexport',Order.ORDER_STATUS_CREATED,Order.ORDER_STATUS_FAILED);
  	var PenniesOrdersCount : Number = PenniesOrders.count;
-	
+
+
 	if(PenniesOrdersCount<=0)		
 		return new dwsystem.Status(dwsystem.Status.OK, "NO_ORDERS_FOUND", "Job completed successfully. No orders were found");
 						
@@ -36,9 +150,14 @@ function postPenniesDonation(parameters, stepExecution) {
 			   	if(donationAmount.available && donationAmount.value > 0) {
 			   	
 					var apiResult = libPenniesAPI.postDonation(order, donationAmount.value);
-					
+					var isCurrencyError = false;
+
+					if(apiResult.errorOccurred && apiResult.errorMessage.indexOf('currency') > -1) {
+						isCurrencyError = true;
+					}
+
 					//update order with pennies donation status as exported and pennies post date
-					if(!apiResult.errorOccurred) {
+					if(!apiResult.errorOccurred || (apiResult.errorOccurred && isCurrencyError)) {
                         Transaction.wrap(function () {
                             order.custom.penniesDonationStatus = 'exported';
 		   					order.custom.penniesPostDate = new Date();
@@ -172,3 +291,4 @@ function generatePenniesDonationReport( parameters, stepExecution) {
 
 exports.generatePenniesDonationReport = generatePenniesDonationReport;
 exports.postPenniesDonation = postPenniesDonation;
+exports.postPenniesReport = postPenniesReport;

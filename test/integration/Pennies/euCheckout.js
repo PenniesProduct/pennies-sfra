@@ -4,7 +4,7 @@ var chai = require('chai');
 chai.use(chaiSubset);
 
 var request = require('request-promise');
-var config = require('../it.config');
+var config = require('../eur.config');
 
 describe('Create Checkout Pennies Donation Checkout Flow', function () {
     var cookieJar = request.jar();
@@ -80,7 +80,7 @@ describe('Create Checkout Pennies Donation Checkout Flow', function () {
             dwfrm_shipping_shippingAddress_addressFields_city: 'Hoffman Estates',
             dwfrm_shipping_shippingAddress_addressFields_postalCode: 'WC2N 5DU',
             dwfrm_shipping_shippingAddress_addressFields_phone: '01222555555',
-            dwfrm_shipping_shippingAddress_shippingMethodID: 'GBP001',
+            dwfrm_shipping_shippingAddress_shippingMethodID: 'EUR001',
             dwfrm_shipping_shippingAddress_giftMessage: ''
 
         },
@@ -150,7 +150,7 @@ describe('Create Checkout Pennies Donation Checkout Flow', function () {
             assert.equal(response.statusCode, 200, 'Expected POST  CSRF-Generate call statusCode to be 200.');
             var nextRequest = displayDonationRequest;
             csrfJsonResponse = JSON.parse(response.body);
-            // step3 : submit billing request with token acquired in step 2
+            // step3 : submit billing request with token aquired in step 2
             nextRequest.url += '?' +
                 csrfJsonResponse.csrf.tokenName + '=' +
                 csrfJsonResponse.csrf.token;

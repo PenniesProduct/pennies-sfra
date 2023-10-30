@@ -53,11 +53,16 @@
 <iscomment>Start Pennies donation Changes</iscomment>
 <div class="row leading-lines donation-item" <isif condition="${pdict.order.penniesDonation.donationAmount == 0.00}">style="display:none;" </isif>>
   <div class="col-6 start-lines">
-        <p class="order-receipt-label"><span>Pennies Donation</span></p>
+        <p class="order-receipt-label"><span>${Resource.msg('pennies.total.donation','pennies', null)}</span></p>
     </div>
     <div class="col-6 end-lines">
         <p class="text-right"><span class="donation-total">${pdict.order.penniesDonation.donationDisplayAmount}</span></p>
     </div>
+</div>
+<div class="row leading-lines donation-item no-gutters" <isif condition="${pdict.order.penniesDonation.soundBite == null || pdict.order.penniesDonation.soundBite == 'null'}">style="display:none;" </isif>>
+<div class="col-12">
+    <p class="text-left"><span>${pdict.order.penniesDonation.soundBite}</span></p>
+</div>
 </div>
 <iscomment>End Pennies donation Changes</iscomment>
 
