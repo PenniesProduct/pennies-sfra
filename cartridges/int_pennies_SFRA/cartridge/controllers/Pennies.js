@@ -6,6 +6,47 @@ var libPennies = require('*/cartridge/scripts/common/libPennies');
 var PenniesUtil = require('*/cartridge/scripts/util/PenniesUtil');
 var PenniesApi = require('*/cartridge/scripts/libPenniesAPI');
 var Site = require('dw/system/Site');
+server.get('DisplayBanner', server.middleware.https, function (req, res, next) {
+    var accountDetails = PenniesApi.getAccountDetails();
+    if (Site.current.getCustomPreferenceValue('penniesDonationIntegrationEnabled') && (req.session.currency.currencyCode == 'GBP' || req.session.currency.currencyCode == 'EUR' || req.session.currency.currencyCode == 'USD')) {
+        if (accountDetails.penniesAccessToken === null || accountDetails.penniesMerchantID === null) {
+            res.render('banners/penniesemptybanner', {});
+        } else {
+            var BasketMgr = require('dw/order/BasketMgr');
+            var charityDetails = libPennies.getCharityDetails();
+
+            var apiDurationTime = PenniesUtil.apiDurationTime();
+            if (apiDurationTime > 2000 || charityDetails.errorOccurred == true) {
+                res.render('banners/penniesemptybanner', {});
+            } else {
+
+                var currentBasket = BasketMgr.getCurrentBasket();
+                var renderingTemplate = libPennies.displayPenniesBanner();
+                var donationDisplayAmount = null;
+                var donationAmount = PenniesUtil.getPenniesDonationAmount(currentBasket);
+                var solicitationMessage = PenniesUtil.getSolicitationMessage();
+                if (donationAmount !== null) {
+                    donationDisplayAmount = PenniesUtil.getDonationDisplayAmount(donationAmount.value);
+                }
+
+                res.render(renderingTemplate, {
+                    CharityName: PenniesUtil.getCharityNames(),
+                    CharityTitle: PenniesUtil.getCharityTitle(),
+                    CharityHeading: PenniesUtil.getCharityHeading(),
+                    CharityUrl: PenniesUtil.getCharityUrl(),
+                    CharityLogo: PenniesUtil.getCharityLogoId(),
+                    CharitySoundBite: PenniesUtil.getCharitySoundBite(),
+                    displayDonationAmount: PenniesUtil.getDonationDisplayAmount(req.session.privacyCache.get('penniesDonationAmount')),
+                    donationDisplayAmount: donationDisplayAmount,
+                    solicitationMessage: solicitationMessage
+                });
+            }
+        }
+    } else {
+        res.render('banners/penniesemptybanner', {});
+    }
+    next();
+});
 /**
  * This function gets the pennies banner contents.
  * Gets the cart model. If the donation is already added display - Thank you banner.
@@ -19,27 +60,34 @@ server.get('DisplayBanner', server.middleware.https, function (req, res, next) {
             res.render('banners/penniesemptybanner', {});
         } else {
             var BasketMgr = require('dw/order/BasketMgr');
-            libPennies.getCharityDetails();
-            var currentBasket = BasketMgr.getCurrentBasket();
-            var renderingTemplate = libPennies.displayPenniesBanner();
-            var donationDisplayAmount = null;
-            var donationAmount = PenniesUtil.getPenniesDonationAmount(currentBasket);
-            var solicitationMessage = PenniesUtil.getSolicitationMessage();
-            if (donationAmount !== null) {
-                donationDisplayAmount = PenniesUtil.getDonationDisplayAmount(donationAmount.value);
-            }
+            var charityDetails = libPennies.getCharityDetails();
 
-            res.render(renderingTemplate, {
-                CharityName: PenniesUtil.getCharityNames(),
-                CharityTitle: PenniesUtil.getCharityTitle(),
-                CharityHeading: PenniesUtil.getCharityHeading(),
-                CharityUrl: PenniesUtil.getCharityUrl(),
-                CharityLogo: PenniesUtil.getCharityLogoId(),
-                CharitySoundBite: PenniesUtil.getCharitySoundBite(),
-                displayDonationAmount: PenniesUtil.getDonationDisplayAmount(req.session.privacyCache.get('penniesDonationAmount')),
-                donationDisplayAmount: donationDisplayAmount,
-                solicitationMessage: solicitationMessage
-            });
+            var apiDurationTime = PenniesUtil.apiDurationTime();
+            if (apiDurationTime > 2000 || charityDetails.errorOccurred == true) {
+                res.render('banners/penniesemptybanner', {});
+            } else {
+
+                var currentBasket = BasketMgr.getCurrentBasket();
+                var renderingTemplate = libPennies.displayPenniesBanner();
+                var donationDisplayAmount = null;
+                var donationAmount = PenniesUtil.getPenniesDonationAmount(currentBasket);
+                var solicitationMessage = PenniesUtil.getSolicitationMessage();
+                if (donationAmount !== null) {
+                    donationDisplayAmount = PenniesUtil.getDonationDisplayAmount(donationAmount.value);
+                }
+
+                res.render(renderingTemplate, {
+                    CharityName: PenniesUtil.getCharityNames(),
+                    CharityTitle: PenniesUtil.getCharityTitle(),
+                    CharityHeading: PenniesUtil.getCharityHeading(),
+                    CharityUrl: PenniesUtil.getCharityUrl(),
+                    CharityLogo: PenniesUtil.getCharityLogoId(),
+                    CharitySoundBite: PenniesUtil.getCharitySoundBite(),
+                    displayDonationAmount: PenniesUtil.getDonationDisplayAmount(req.session.privacyCache.get('penniesDonationAmount')),
+                    donationDisplayAmount: donationDisplayAmount,
+                    solicitationMessage: solicitationMessage
+                });
+            }
         }
     } else {
         res.render('banners/penniesemptybanner', {});
