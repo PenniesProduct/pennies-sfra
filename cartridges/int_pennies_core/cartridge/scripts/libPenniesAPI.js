@@ -350,59 +350,6 @@ function retrievePenniesCharityDetails() {
 	var priv = session.privacy.penniesCharities;
 	return { 'errorOccurred': false };
 }
-	
-	var responseObj : JSON ;
-	var accountDetails = getAccountDetails();
-	var accessToken : String = accountDetails.penniesAccessToken;
-	var merchantID : String = accountDetails.penniesMerchantID;
-
-	var amount = 10.1;
-	//Making the reference to a Pennies certificate imported in Business Manager -Not required in js controllers
-	//CertificateRef("penniescertificate");
-
-	var service  = LocalServiceRegistry.createService("pennies.calculation.http.service",{
-		createRequest: function(svc:HTTPService, params) {
-	         svc.addHeader('Access-Token', accessToken);
-	         svc.setRequestMethod("GET");
-	         svc.setURL((svc.getURL()) + "/calculation/" + merchantID);
-	         svc.addParam('amount', amount);
-	         svc.addParam('format','json');
-	    },
-	    parseResponse: function(svc:HTTPService, output) {
-			return output;
-		},
-		getRequestLogMessage: function(reqObj:Object) {	
-			return reqObj;
-		},
-		getResponseLogMessage: function(respObj : Object) {				
-			var statusCode = respObj.statusCode;
-			var statusMessage = respObj.statusMessage;
-			var serviceResponse = respObj.text;
-			var errorMessage = respObj.errorText;	
-			var responseMsg = "Retrieved Pennies Charity details ::::: Response Code = " + statusCode + 
-								" :::::  Response Message = " + statusMessage + 
-								" :::::  Response = " + serviceResponse + 
-								" ::::: Error Message " + errorMessage;
-			return responseMsg;	
-		} 
-	});
-		
-	var params = {};
-	
-	var result = service.call(params);
-	
-	var apiResult = checkIfAPICallFailed(result, 'Retrieve Charity Details');
-	
-	if(apiResult.errorOccurred) 
-		return {'errorOccurred' : true};
-		
-	var responseJSONVal = result.object.text;  
-	var responseObj = JSON.parse(responseJSONVal);
-		
-	//Update charity details
-	session.privacy.penniesCharities = JSON.stringify(responseObj.charities);    	 	
-	return {'errorOccurred' : false};
-}
 
 
 /**
