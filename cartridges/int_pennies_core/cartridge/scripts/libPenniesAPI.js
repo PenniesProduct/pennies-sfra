@@ -224,6 +224,7 @@ function postDonation(order, penniesDonationAmount) {
 	var merchantID : String = accountDetails.penniesMerchantID;
 	var penniesHashKey = order.custom.penniesHashKey;
 	var transactionId = order.orderNo;
+	var donationDateTime = order && order.custom && order.custom.donationDateTime ? order.custom.donationDateTime : '';
 	var currencyCode;
 
 	var service  = LocalServiceRegistry.createService("pennies.donation.http.service",{
@@ -267,6 +268,7 @@ function postDonation(order, penniesDonationAmount) {
 	// Make the service call here
 	var params = 'amount='+penniesDonationAmount+'&hash='+penniesHashKey+'&transaction_id='+transactionId+"&currency="+currencyCode;
 	var result: Result = service.call(params);
+	Logger.info(result);
 	
 	return checkIfAPICallFailed(result, ' Post Donation');
 		

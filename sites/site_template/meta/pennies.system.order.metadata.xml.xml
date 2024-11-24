@@ -2,6 +2,13 @@
 <metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
     <type-extension type-id="Order">
         <custom-attribute-definitions>
+            <attribute-definition attribute-id="donationDateTime">
+                <display-name xml:lang="x-default">Donation Date Time</display-name>
+                <description xml:lang="x-default">Time noted when customer submit the order with consenting to donate pennies</description>
+                <type>datetime</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
             <attribute-definition attribute-id="penniesCharityDetails">
                 <display-name xml:lang="x-default">Pennies Charity Details</display-name>
                 <description xml:lang="x-default">Pennies Charity Details</description>
@@ -52,6 +59,7 @@
         <group-definitions>
             <attribute-group group-id="pennies">
                 <display-name xml:lang="x-default">Pennies</display-name>
+                <attribute attribute-id="donationDateTime"/>
                 <attribute attribute-id="penniesCharityDetails"/>
                 <attribute attribute-id="penniesHashKey"/>
                 <attribute attribute-id="penniesDonationStatus"/>
