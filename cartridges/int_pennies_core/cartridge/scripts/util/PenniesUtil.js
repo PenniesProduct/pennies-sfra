@@ -12,6 +12,23 @@ var BasketMgr = require('dw/order/BasketMgr');
 
 var PenniesUtil = {};
 
+/**
+ * This function returns the pennies charity names returned by the API call which is set in the session.
+ * This value is used to display in the pennies banners.
+ */
+PenniesUtil.apiDurationTime = function () {
+
+	var apiDurationTime = '';
+
+	if (!empty(session.privacy.penniesCharities)) {
+
+		var charities = JSON.parse(session.privacy.penniesCharities);
+		apiDurationTime = charities[0]['apiDurationTime'];
+	}
+
+	return apiDurationTime;
+}
+
 PenniesUtil.getSoundBite = function (order) {
 	var soundBite = '';
 	if (order.custom.penniesCharityDetails) {

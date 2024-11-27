@@ -52,6 +52,14 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
+            <attribute-definition attribute-id="penniesCalculationServiceDelay">
+                <display-name xml:lang="x-default">Enter integer time in milli seconds to cause detay in the test API for checkout pennies widget e.g (enter 2000 for 2 seconds delay)</display-name>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-value>0.0</min-value>
+                <default-value>0</default-value>
+            </attribute-definition>
         </custom-attribute-definitions>
     	<group-definitions>
     		<attribute-group group-id="Pennies">
@@ -60,6 +68,7 @@
                 <attribute attribute-id="penniesAccessToken"/>
                 <attribute attribute-id="penniesDonationIntegrationEnabled"/>
                 <attribute attribute-id="penniesMerchantID"/>
+                <attribute attribute-id="penniesCalculationServiceDelay"/>
             </attribute-group>
     	</group-definitions>
     </type-extension>

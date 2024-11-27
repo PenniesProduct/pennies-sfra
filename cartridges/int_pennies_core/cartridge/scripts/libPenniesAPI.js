@@ -123,15 +123,18 @@ function calculateDonation(basket) {
 }
 
 function logView() {
-	var CustomObjectMgr = require('dw/object/CustomObjectMgr');
-	var Transaction = require('dw/system/Transaction');
-	var UUIDUtils = require('dw/util/UUIDUtils');
-	var uniqueID = UUIDUtils.createUUID();
+	try {
+	 var CustomObjectMgr = require('dw/object/CustomObjectMgr');
+	 var Transaction = require('dw/system/Transaction');
+	 var UUIDUtils = require('dw/util/UUIDUtils');
+	 var uniqueID = UUIDUtils.createUUID();
 
-	Transaction.wrap(function () {
-		var customObject = CustomObjectMgr.createCustomObject("penniesViews", uniqueID);
-	});
-
+	 Transaction.wrap(function () {
+	 	var customObject = CustomObjectMgr.createCustomObject("penniesViews", uniqueID);
+	 });
+	} catch (error) {
+		
+	}
 }
 
 /*
@@ -279,58 +282,73 @@ function postDonation(order, penniesDonationAmount) {
  * 
  */
 function retrievePenniesCharityDetails() {
-	
-	var responseObj : JSON ;
+
+	var responseObj: JSON;
 	var accountDetails = getAccountDetails();
-	var accessToken : String = accountDetails.penniesAccessToken;
-	var merchantID : String = accountDetails.penniesMerchantID;
+	var accessToken: String = accountDetails.penniesAccessToken;
+	var merchantID: String = accountDetails.penniesMerchantID;
 
 	var amount = 10.1;
 	//Making the reference to a Pennies certificate imported in Business Manager -Not required in js controllers
 	//CertificateRef("penniescertificate");
 
-	var service  = LocalServiceRegistry.createService("pennies.calculation.http.service",{
-		createRequest: function(svc:HTTPService, params) {
-	         svc.addHeader('Access-Token', accessToken);
-	         svc.setRequestMethod("GET");
-	         svc.setURL((svc.getURL()) + "/calculation/" + merchantID);
-	         svc.addParam('amount', amount);
-	         svc.addParam('format','json');
-	    },
-	    parseResponse: function(svc:HTTPService, output) {
+	var service = LocalServiceRegistry.createService("pennies.calculation.http.service", {
+		createRequest: function (svc: HTTPService, params) {
+			svc.addHeader('Access-Token', accessToken);
+			svc.setRequestMethod("GET");
+			svc.setURL((svc.getURL()) + "/calculation/" + merchantID);
+			svc.addParam('amount', amount);
+			svc.addParam('format', 'json');
+		},
+		parseResponse: function (svc: HTTPService, output) {
 			return output;
 		},
-		getRequestLogMessage: function(reqObj:Object) {	
+		getRequestLogMessage: function (reqObj: Object) {
 			return reqObj;
 		},
-		getResponseLogMessage: function(respObj : Object) {				
+		getResponseLogMessage: function (respObj: Object) {
 			var statusCode = respObj.statusCode;
 			var statusMessage = respObj.statusMessage;
 			var serviceResponse = respObj.text;
-			var errorMessage = respObj.errorText;	
-			var responseMsg = "Retrieved Pennies Charity details ::::: Response Code = " + statusCode + 
-								" :::::  Response Message = " + statusMessage + 
-								" :::::  Response = " + serviceResponse + 
-								" ::::: Error Message " + errorMessage;
-			return responseMsg;	
-		} 
+			var errorMessage = respObj.errorText;
+			var responseMsg = "Retrieved Pennies Charity details ::::: Response Code = " + statusCode +
+				" :::::  Response Message = " + statusMessage +
+				" :::::  Response = " + serviceResponse +
+				" ::::: Error Message " + errorMessage;
+			return responseMsg;
+		}
 	});
-		
+
 	var params = {};
-	
+
+	// Capture start time before making the service call
+	var startTime = new Date().getTime();
+	var TestDelay = Site.current.getCustomPreferenceValue('penniesCalculationServiceDelay') ? Site.current.getCustomPreferenceValue('penniesCalculationServiceDelay') : 0;
 	var result = service.call(params);
-	
+
+	// Capture end time after the service call completes
+	var endTime = new Date().getTime();
+
+	// Calculate the duration
+	var duration = endTime - startTime;
+	if (TestDelay) {
+		duration = duration + TestDelay;
+	}
 	var apiResult = checkIfAPICallFailed(result, 'Retrieve Charity Details');
-	
-	if(apiResult.errorOccurred) 
-		return {'errorOccurred' : true};
-		
-	var responseJSONVal = result.object.text;  
+
+	if (apiResult.errorOccurred)
+		return { 'errorOccurred': true };
+
+	var responseJSONVal = result.object.text;
 	var responseObj = JSON.parse(responseJSONVal);
-		
+	if (duration) {
+		responseObj.charities[0].apiDurationTime = duration;
+	}
+
 	//Update charity details
-	session.privacy.penniesCharities = JSON.stringify(responseObj.charities);    	 	
-	return {'errorOccurred' : false};
+	session.privacy.penniesCharities = JSON.stringify(responseObj.charities);
+	var priv = session.privacy.penniesCharities;
+	return { 'errorOccurred': false };
 }
 
 
