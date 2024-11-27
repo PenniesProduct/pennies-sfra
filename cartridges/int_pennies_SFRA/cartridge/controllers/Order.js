@@ -22,6 +22,12 @@ server.append(
             var PenniesUtil = require('*/cartridge/scripts/util/PenniesUtil');
             var shippingPriceExclDonation = PenniesUtil.getShippingPriceExcludingDonation(order);
             var donationAmount = PenniesUtil.getPenniesDonationAmount(order);
+            if (donationAmount.available && donationAmount.value > 0) {
+                var Transaction = require('dw/system/Transaction');
+                Transaction.wrap(function () {
+                    order.custom.donationDateTime = new Date();
+                });
+            }
             var soundBite = PenniesUtil.getSoundBite(order);
             viewData.order.penniesDonation = {
                 donationDisplayAmount: formatCurrency(donationAmount.value, order.currencyCode),
