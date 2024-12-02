@@ -269,7 +269,7 @@ function postDonation(order, penniesDonationAmount) {
 	}
 	
 	// Make the service call here
-	var params = 'amount='+penniesDonationAmount+'&hash='+penniesHashKey+'&transaction_id='+transactionId+"&currency="+currencyCode;
+	var params = 'amount='+penniesDonationAmount+'&hash='+penniesHashKey+'&donation_date_time='+donationDateTime+'&transaction_id='+transactionId+"&currency="+currencyCode;
 	var result: Result = service.call(params);
 	Logger.info(result);
 	
