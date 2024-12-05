@@ -11,19 +11,23 @@
                 <min-length>0</min-length>
                 <value-definitions>
                     <value-definition>
-                        <display xml:lang="x-default">Top Up Fixed 25p</display>
+                        <display xml:lang="x-default">Top Up Fixed Value</display>
                         <value>TEST1</value>
                     </value-definition>
                     <value-definition>
-                        <display xml:lang="x-default">Round Up to Pound</display>
+                        <display xml:lang="x-default">Round Up</display>
                         <value>TEST2</value>
                     </value-definition>
                     <value-definition>
-                        <display xml:lang="x-default">Flexi to pound or fixed 25p</display>
+                        <display xml:lang="x-default">Flexi Round Up</display>
                         <value>TEST3</value>
                     </value-definition>
                     <value-definition>
-                        <display xml:lang="x-default">Banded</display>
+                        <display xml:lang="x-default">Banded - Multiple Amounts</display>
+                        <value>TEST4</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Round Up With Minimum Basket</display>
                         <value>TEST4</value>
                     </value-definition>
                 </value-definitions>
