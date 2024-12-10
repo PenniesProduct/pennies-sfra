@@ -80,7 +80,7 @@ function calculateDonation(basket) {
 		createRequest: function(svc:HTTPService, params) {
 	         svc.addHeader('Access-Token', accessToken);
 	         svc.setRequestMethod("GET");
-	         svc.setURL((svc.getURL()) + "/calculation/" + merchantID);
+	         svc.setURL((svc.getURL()) + "/donation/calculation/" + merchantID);
 	         svc.addParam('amount', basketTotal);
 	         svc.addParam('format','json');
 	    },
@@ -151,7 +151,7 @@ function getService(accessToken,merchantID,basketTotal){
 		createRequest: function(svc:HTTPService, params) {
 	         svc.addHeader('Access-Token', accessToken);
 	         svc.setRequestMethod("GET");
-	         svc.setURL((svc.getURL()) + "/calculation/" + merchantID);
+	         svc.setURL((svc.getURL()) + "/donation/calculation/" + merchantID);
 	         svc.addParam('amount', basketTotal);
 	         svc.addParam('format','json');
 	    },
