@@ -303,7 +303,7 @@ function retrievePenniesCharityDetails() {
 		createRequest: function (svc: HTTPService, params) {
 			svc.addHeader('Access-Token', accessToken);
 			svc.setRequestMethod("GET");
-			svc.setURL((svc.getURL()) + "/calculation/" + merchantID);
+			svc.setURL((svc.getURL()) + "/donation/calculation/" + merchantID);
 			svc.addParam('amount', amount);
 			svc.addParam('format', 'json');
 		},
