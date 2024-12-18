@@ -240,7 +240,7 @@ function postDonation(order, penniesDonationAmount) {
 	         svc.addHeader('Access-Token', accessToken);
 	         svc.addHeader('Content-Type', 'application/x-www-form-urlencoded');
 	         svc.setRequestMethod("POST");
-	         svc.setURL((svc.getURL()) + "/" + merchantID);
+	         svc.setURL((svc.getURL()) + "/donation/" + merchantID);
 	         return params;
 	    },
 	    parseResponse: function(svc:HTTPService, output) {
