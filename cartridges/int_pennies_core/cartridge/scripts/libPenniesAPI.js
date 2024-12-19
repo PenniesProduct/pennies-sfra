@@ -37,11 +37,6 @@ function getAccountDetails() {
 				}
 			case 'TEST4':
 				return {
-					penniesMerchantID: '999014',
-					penniesAccessToken: 'tok$14',
-				}
-			case 'TEST5':
-				return {
 					penniesMerchantID: '999015',
 					penniesAccessToken: 'tok$15',
 				}

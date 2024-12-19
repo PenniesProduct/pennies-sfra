@@ -23,12 +23,8 @@
                         <value>TEST3</value>
                     </value-definition>
                     <value-definition>
-                        <display xml:lang="x-default">Banded - Multiple Amounts</display>
-                        <value>TEST4</value>
-                    </value-definition>
-                    <value-definition>
                         <display xml:lang="x-default">Round Up With Minimum Basket</display>
-                        <value>TEST5</value>
+                        <value>TEST4</value>
                     </value-definition>
                 </value-definitions>
             </attribute-definition>
