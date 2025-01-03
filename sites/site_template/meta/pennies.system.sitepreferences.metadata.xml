@@ -23,8 +23,12 @@
                         <value>TEST3</value>
                     </value-definition>
                     <value-definition>
-                        <display xml:lang="x-default">Round Up With Minimum Basket</display>
+                        <display xml:lang="x-default">Banding - Basket>£30.00: £1.00, B>£90.00: £2.00, B>£150.00: £5.00</display>
                         <value>TEST4</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Round Up With Minimum Basket</display>
+                        <value>TEST5</value>
                     </value-definition>
                 </value-definitions>
             </attribute-definition>
